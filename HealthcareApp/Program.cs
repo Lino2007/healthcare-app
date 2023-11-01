@@ -1,6 +1,10 @@
+using HealthcareApp.Repository;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<HealthcareDbContext>(opt => opt.UseSqlServer(builder.Configuration["ConnectionStrings:HealthcareApp"]));
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
