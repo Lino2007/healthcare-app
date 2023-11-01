@@ -10,9 +10,11 @@ namespace HealthcareApp.Models.DataModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
+        [Required]
         [StringLength(30, MinimumLength = 2)]
         public string Firstname { get; set; } = null!;
 
+        [Required]
         [StringLength(30, MinimumLength = 2)]
         public string Lastname { get; set; } = null!;
 
@@ -26,5 +28,8 @@ namespace HealthcareApp.Models.DataModels
 
         [StringLength(25, MinimumLength = 6)]
         public string? TelephoneNumber { get; set; }
+
+        public ICollection<PatientAdmission> PatientAdmissions { get; } = new List<PatientAdmission>();
+
     }
 }

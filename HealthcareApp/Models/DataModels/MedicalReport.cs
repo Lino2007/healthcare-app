@@ -9,6 +9,7 @@ namespace HealthcareApp.Models.DataModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
+        [Required]
         [StringLength(1024)]
         public string Description { get; set; } = null!;
 
