@@ -10,6 +10,11 @@ namespace HealthcareApp.Repository.Implementation
         {
         }
 
+        public override async Task<List<Doctor>> GetAll()
+        {
+            return await base.FindBy(doctor => doctor.IsDeleted == false);
+        }
+
         public override async Task<Doctor?> Delete(Guid id)
         {
             var doctor = await base.GetById(id);
@@ -20,5 +25,7 @@ namespace HealthcareApp.Repository.Implementation
             }
             return doctor;
         }
+
+        
     }
 }

@@ -1,43 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HealthcareApp.Models.DataModels;
-using HealthcareApp.Repository;
+using HealthcareApp.Repository.Interface;
 
 namespace HealthcareApp.Controllers
 {
     public class DoctorsController : Controller
     {
-        private readonly HealthcareDbContext _context;
+        private readonly IDoctorRepository _doctorRepository;
 
-        public DoctorsController(HealthcareDbContext context)
+        public DoctorsController(IDoctorRepository doctorRepository)
         {
-            _context = context;
+            _doctorRepository = doctorRepository;
         }
 
         // GET: Doctors
         public async Task<IActionResult> Index()
         {
-              return _context.Doctors != null ? 
-                          View(await _context.Doctors.ToListAsync()) :
-                          Problem("Entity set 'HealthcareDbContext.Doctors'  is null.");
+            return View(await _doctorRepository.GetAll());                
         }
 
         // GET: Doctors/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.Doctors == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var doctor = await _context.Doctors
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (doctor == null)
+            var doctor = await _doctorRepository.GetById(id.Value);
+            if (doctor is null)
             {
                 return NotFound();
             }
@@ -52,17 +44,13 @@ namespace HealthcareApp.Controllers
         }
 
         // POST: Doctors/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Firstname,Lastname,Title,Code")] Doctor doctor)
         {
             if (ModelState.IsValid)
             {
-                doctor.Id = Guid.NewGuid();
-                _context.Add(doctor);
-                await _context.SaveChangesAsync();
+                await _doctorRepository.Add(doctor);
                 return RedirectToAction(nameof(Index));
             }
             return View(doctor);
@@ -71,13 +59,13 @@ namespace HealthcareApp.Controllers
         // GET: Doctors/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.Doctors == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var doctor = await _context.Doctors.FindAsync(id);
-            if (doctor == null)
+            var doctor = await _doctorRepository.GetById(id.Value);
+            if (doctor is null)
             {
                 return NotFound();
             }
@@ -85,8 +73,6 @@ namespace HealthcareApp.Controllers
         }
 
         // POST: Doctors/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Firstname,Lastname,Title,Code")] Doctor doctor)
@@ -100,12 +86,11 @@ namespace HealthcareApp.Controllers
             {
                 try
                 {
-                    _context.Update(doctor);
-                    await _context.SaveChangesAsync();
+                   await _doctorRepository.Update(doctor);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DoctorExists(doctor.Id))
+                    if (await _doctorRepository.Exists(doctor.Id))
                     {
                         return NotFound();
                     }
@@ -122,14 +107,13 @@ namespace HealthcareApp.Controllers
         // GET: Doctors/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.Doctors == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var doctor = await _context.Doctors
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (doctor == null)
+            var doctor = await _doctorRepository.GetById(id.Value);
+            if (doctor is null)
             {
                 return NotFound();
             }
@@ -142,23 +126,12 @@ namespace HealthcareApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.Doctors == null)
+            var doctor = await _doctorRepository.GetById(id);
+            if (doctor is not null)
             {
-                return Problem("Entity set 'HealthcareDbContext.Doctors'  is null.");
+               await _doctorRepository.Delete(doctor.Id);
             }
-            var doctor = await _context.Doctors.FindAsync(id);
-            if (doctor != null)
-            {
-                _context.Doctors.Remove(doctor);
-            }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool DoctorExists(Guid id)
-        {
-          return (_context.Doctors?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
