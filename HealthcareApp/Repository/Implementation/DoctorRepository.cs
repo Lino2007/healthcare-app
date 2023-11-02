@@ -9,5 +9,16 @@ namespace HealthcareApp.Repository.Implementation
         public DoctorRepository(HealthcareDbContext context) : base(context)
         {
         }
+
+        public override async Task<Doctor?> Delete(Guid id)
+        {
+            var doctor = await base.GetById(id);
+            if (doctor is not null && !doctor.IsDeleted)
+            {
+               doctor.IsDeleted = true;
+               await base.Update(doctor);
+            }
+            return doctor;
+        }
     }
 }
