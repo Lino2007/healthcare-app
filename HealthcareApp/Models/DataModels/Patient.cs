@@ -14,6 +14,7 @@ namespace HealthcareApp.Models.DataModels
         [StringLength(30, MinimumLength = 2)]
         public string Lastname { get; set; } = null!;
 
+        [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
         [Column(TypeName = "nvarchar(10)")]
@@ -24,6 +25,8 @@ namespace HealthcareApp.Models.DataModels
 
         [StringLength(25, MinimumLength = 6)]
         public string? TelephoneNumber { get; set; }
+
+        public bool IsDeleted { get; set; }
 
         public ICollection<PatientAdmission> PatientAdmissions { get; } = new List<PatientAdmission>();
 
