@@ -14,6 +14,8 @@ namespace HealthcareApp.Models.DataModels
         [StringLength(30, MinimumLength = 2)]
         public string Lastname { get; set; } = null!;
 
+        public bool IsDeleted { get; set; }
+
         [Column(TypeName = "nvarchar(24)")]
         public DoctorTitle Title { get; set; }
 

@@ -37,7 +37,7 @@ namespace HealthcareApp.Repository.Implementation
             return (await _context.Set<T>().AnyAsync(e => e.Id == id));
         }
 
-        public async virtual Task<IEnumerable<T>> FindBy(Expression<Func<T, bool>> predicate)
+        public async virtual Task<List<T>> FindBy(Expression<Func<T, bool>> predicate)
         {
             IQueryable<T> query = _context.Set<T>();
             if (predicate is not null)
