@@ -14,6 +14,7 @@ namespace HealthcareApp.Models.DataModels
         [StringLength(30, MinimumLength = 2)]
         public string Lastname { get; set; } = null!;
 
+        [Display(Name = "Date of Birth")]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
@@ -23,6 +24,7 @@ namespace HealthcareApp.Models.DataModels
         [StringLength(50, MinimumLength = 2)]
         public string? Address { get; set; }
 
+        [Display(Name = "Telephone Number")]
         [StringLength(25, MinimumLength = 6)]
         public string? TelephoneNumber { get; set; }
 
