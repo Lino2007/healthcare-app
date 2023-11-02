@@ -35,7 +35,8 @@ namespace HealthcareApp.Migrations
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(10)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    TelephoneNumber = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true)
+                    TelephoneNumber = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -104,15 +105,15 @@ namespace HealthcareApp.Migrations
 
             migrationBuilder.InsertData(
                 table: "Patients",
-                columns: new[] { "Id", "Address", "DateOfBirth", "Firstname", "Gender", "Lastname", "TelephoneNumber" },
+                columns: new[] { "Id", "Address", "DateOfBirth", "Firstname", "Gender", "IsDeleted", "Lastname", "TelephoneNumber" },
                 values: new object[,]
                 {
-                    { new Guid("1200a45e-8914-47bf-9035-e85aaad2b261"), "Address 1", new DateTime(1980, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "Michels", "Male", "Jones", "00023323" },
-                    { new Guid("211a94b3-78cd-4a6b-babd-eb8c3a18cfea"), "Address 5", new DateTime(1980, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "Brock", "Male", "Wallace", "1111122222" },
-                    { new Guid("2b99eca2-1421-4789-a3e1-00da3d953abe"), "Address 4", new DateTime(1997, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "Hannah", "Female", "Brown", "7777777" },
-                    { new Guid("73776586-b4db-4769-9228-f103e8499d4f"), "Address 3", new DateTime(1978, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nick", "Male", "Oakenfold", "6666666" },
-                    { new Guid("78eecc5e-5e7c-46d7-b472-3a1bddf289ba"), "Address 2", new DateTime(1984, 5, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wolf", "Male", "Warren", "555555" },
-                    { new Guid("b226f2a3-8f68-4c85-b162-4b2204f8665d"), null, new DateTime(1979, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jenna", "Female", "Lynn", null }
+                    { new Guid("1200a45e-8914-47bf-9035-e85aaad2b261"), "Address 1", new DateTime(1970, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Michels", "Male", false, "Jones", "00023323" },
+                    { new Guid("211a94b3-78cd-4a6b-babd-eb8c3a18cfea"), "Address 5", new DateTime(1993, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Brock", "Male", false, "Wallace", "1111122222" },
+                    { new Guid("2b99eca2-1421-4789-a3e1-00da3d953abe"), "Address 4", new DateTime(1988, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "Hannah", "Female", false, "Brown", "7777777" },
+                    { new Guid("73776586-b4db-4769-9228-f103e8499d4f"), "Address 3", new DateTime(1993, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nick", "Male", false, "Oakenfold", "6666666" },
+                    { new Guid("78eecc5e-5e7c-46d7-b472-3a1bddf289ba"), "Address 2", new DateTime(1987, 1, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wolf", "Male", false, "Warren", "555555" },
+                    { new Guid("b226f2a3-8f68-4c85-b162-4b2204f8665d"), null, new DateTime(1978, 9, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jenna", "Female", false, "Lynn", null }
                 });
 
             migrationBuilder.InsertData(
@@ -120,12 +121,12 @@ namespace HealthcareApp.Migrations
                 columns: new[] { "Id", "AdmissionDateTime", "DoctorId", "IsUrgent", "PatientId" },
                 values: new object[,]
                 {
-                    { new Guid("11aea768-8434-4468-9cd7-8034a105f31a"), new DateTime(2023, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("7b2e6559-3442-416c-afda-e35232824ce4"), false, new Guid("b226f2a3-8f68-4c85-b162-4b2204f8665d") },
-                    { new Guid("21aea768-8434-4468-9cd7-8034a105f31a"), new DateTime(2021, 4, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("7b2e6559-3442-416c-afda-e35232824ce4"), false, new Guid("78eecc5e-5e7c-46d7-b472-3a1bddf289ba") },
-                    { new Guid("31aea768-8434-4468-9cd7-8034a105f31a"), new DateTime(2023, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("6a2e6559-3442-416c-afda-e35232824ce4"), false, new Guid("73776586-b4db-4769-9228-f103e8499d4f") },
-                    { new Guid("41aea768-8434-4468-9cd7-8034a105f31a"), new DateTime(2020, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("6a2e6559-3442-416c-afda-e35232824ce4"), false, new Guid("2b99eca2-1421-4789-a3e1-00da3d953abe") },
-                    { new Guid("51aea768-8434-4468-9cd7-8034a105f31a"), new DateTime(2023, 8, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("6a2e6559-3442-416c-afda-e35232824ce4"), false, new Guid("211a94b3-78cd-4a6b-babd-eb8c3a18cfea") },
-                    { new Guid("81aea768-8434-4468-9cd7-8034a105f31a"), new DateTime(2023, 7, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("7b2e6559-3442-416c-afda-e35232824ce4"), false, new Guid("1200a45e-8914-47bf-9035-e85aaad2b261") }
+                    { new Guid("11aea768-8434-4468-9cd7-8034a105f31a"), new DateTime(2023, 10, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("7b2e6559-3442-416c-afda-e35232824ce4"), false, new Guid("b226f2a3-8f68-4c85-b162-4b2204f8665d") },
+                    { new Guid("21aea768-8434-4468-9cd7-8034a105f31a"), new DateTime(2020, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("7b2e6559-3442-416c-afda-e35232824ce4"), false, new Guid("78eecc5e-5e7c-46d7-b472-3a1bddf289ba") },
+                    { new Guid("31aea768-8434-4468-9cd7-8034a105f31a"), new DateTime(2023, 8, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("6a2e6559-3442-416c-afda-e35232824ce4"), false, new Guid("73776586-b4db-4769-9228-f103e8499d4f") },
+                    { new Guid("41aea768-8434-4468-9cd7-8034a105f31a"), new DateTime(2020, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("6a2e6559-3442-416c-afda-e35232824ce4"), false, new Guid("2b99eca2-1421-4789-a3e1-00da3d953abe") },
+                    { new Guid("51aea768-8434-4468-9cd7-8034a105f31a"), new DateTime(2023, 4, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("6a2e6559-3442-416c-afda-e35232824ce4"), false, new Guid("211a94b3-78cd-4a6b-babd-eb8c3a18cfea") },
+                    { new Guid("81aea768-8434-4468-9cd7-8034a105f31a"), new DateTime(2021, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("7b2e6559-3442-416c-afda-e35232824ce4"), false, new Guid("1200a45e-8914-47bf-9035-e85aaad2b261") }
                 });
 
             migrationBuilder.InsertData(
@@ -133,12 +134,12 @@ namespace HealthcareApp.Migrations
                 columns: new[] { "Id", "DateCreated", "Description", "PatientAdmissionId" },
                 values: new object[,]
                 {
-                    { new Guid("13024ef8-c1e7-4fea-b4e3-abf161b88196"), new DateTime(2023, 11, 2, 21, 19, 42, 987, DateTimeKind.Local).AddTicks(2957), "Description 4", new Guid("31aea768-8434-4468-9cd7-8034a105f31a") },
-                    { new Guid("23024ef8-c1e7-4fea-b4e3-abf161b88196"), new DateTime(2023, 11, 2, 21, 19, 42, 987, DateTimeKind.Local).AddTicks(2960), "Description 5", new Guid("41aea768-8434-4468-9cd7-8034a105f31a") },
-                    { new Guid("33024ef8-c1e7-4fea-b4e3-abf161b88196"), new DateTime(2023, 11, 2, 21, 19, 42, 987, DateTimeKind.Local).AddTicks(2947), "Description 2", new Guid("11aea768-8434-4468-9cd7-8034a105f31a") },
-                    { new Guid("53024ef8-c1e7-4fea-b4e3-abf161b88196"), new DateTime(2023, 11, 2, 21, 19, 42, 987, DateTimeKind.Local).AddTicks(2950), "Description 3", new Guid("21aea768-8434-4468-9cd7-8034a105f31a") },
-                    { new Guid("63024ef8-c1e7-4fea-b4e3-abf161b88196"), new DateTime(2023, 11, 2, 21, 19, 42, 987, DateTimeKind.Local).AddTicks(2963), "Description 6", new Guid("51aea768-8434-4468-9cd7-8034a105f31a") },
-                    { new Guid("93024ef8-c1e7-4fea-b4e3-abf161b88196"), new DateTime(2023, 11, 2, 21, 19, 42, 987, DateTimeKind.Local).AddTicks(2940), "Description 1", new Guid("81aea768-8434-4468-9cd7-8034a105f31a") }
+                    { new Guid("13024ef8-c1e7-4fea-b4e3-abf161b88196"), new DateTime(2023, 11, 2, 22, 50, 54, 334, DateTimeKind.Local).AddTicks(6088), "Description 4", new Guid("31aea768-8434-4468-9cd7-8034a105f31a") },
+                    { new Guid("23024ef8-c1e7-4fea-b4e3-abf161b88196"), new DateTime(2023, 11, 2, 22, 50, 54, 334, DateTimeKind.Local).AddTicks(6091), "Description 5", new Guid("41aea768-8434-4468-9cd7-8034a105f31a") },
+                    { new Guid("33024ef8-c1e7-4fea-b4e3-abf161b88196"), new DateTime(2023, 11, 2, 22, 50, 54, 334, DateTimeKind.Local).AddTicks(6082), "Description 2", new Guid("11aea768-8434-4468-9cd7-8034a105f31a") },
+                    { new Guid("53024ef8-c1e7-4fea-b4e3-abf161b88196"), new DateTime(2023, 11, 2, 22, 50, 54, 334, DateTimeKind.Local).AddTicks(6085), "Description 3", new Guid("21aea768-8434-4468-9cd7-8034a105f31a") },
+                    { new Guid("63024ef8-c1e7-4fea-b4e3-abf161b88196"), new DateTime(2023, 11, 2, 22, 50, 54, 334, DateTimeKind.Local).AddTicks(6094), "Description 6", new Guid("51aea768-8434-4468-9cd7-8034a105f31a") },
+                    { new Guid("93024ef8-c1e7-4fea-b4e3-abf161b88196"), new DateTime(2023, 11, 2, 22, 50, 54, 334, DateTimeKind.Local).AddTicks(6076), "Description 1", new Guid("81aea768-8434-4468-9cd7-8034a105f31a") }
                 });
 
             migrationBuilder.CreateIndex(
