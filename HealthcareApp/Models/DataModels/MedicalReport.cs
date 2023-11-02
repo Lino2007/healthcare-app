@@ -3,12 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HealthcareApp.Models.DataModels
 {
-    public class MedicalReport
+    public class MedicalReport : BaseDataModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
-
         [Required]
         [StringLength(1024)]
         public string Description { get; set; } = null!;

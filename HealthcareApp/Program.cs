@@ -1,13 +1,21 @@
 using HealthcareApp.Repository;
+using HealthcareApp.Repository.Implementation;
+using HealthcareApp.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IMedicalReportRepository, MedicalReportRepository>();
+builder.Services.AddScoped<IPatientAdmissionRepository, PatientAdmissionRepository>();
 builder.Services.AddDbContext<HealthcareDbContext>(opt => opt.UseSqlServer(builder.Configuration["ConnectionStrings:HealthcareApp"]));
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

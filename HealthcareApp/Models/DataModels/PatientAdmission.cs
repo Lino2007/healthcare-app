@@ -3,12 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HealthcareApp.Models.DataModels
 {
-    public class PatientAdmission
+    public class PatientAdmission : BaseDataModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
-
         public DateTime AdmissionDateTime { get; set; }
 
         public Guid PatientId { get; set; }

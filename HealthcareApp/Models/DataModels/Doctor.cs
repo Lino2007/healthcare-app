@@ -4,12 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HealthcareApp.Models.DataModels
 {
-    public class Doctor
+    public class Doctor : BaseDataModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
-
         [Required]
         [StringLength(30, MinimumLength = 2)]
         public string Firstname { get; set; } = null!;
