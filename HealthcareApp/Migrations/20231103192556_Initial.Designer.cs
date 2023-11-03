@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthcareApp.Migrations
 {
     [DbContext(typeof(HealthcareDbContext))]
-    [Migration("20231102215054_Initial")]
+    [Migration("20231103192556_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -140,42 +140,42 @@ namespace HealthcareApp.Migrations
                         new
                         {
                             Id = new Guid("93024ef8-c1e7-4fea-b4e3-abf161b88196"),
-                            DateCreated = new DateTime(2023, 11, 2, 22, 50, 54, 334, DateTimeKind.Local).AddTicks(6076),
+                            DateCreated = new DateTime(2023, 11, 3, 20, 25, 56, 228, DateTimeKind.Local).AddTicks(1925),
                             Description = "Description 1",
                             PatientAdmissionId = new Guid("81aea768-8434-4468-9cd7-8034a105f31a")
                         },
                         new
                         {
                             Id = new Guid("33024ef8-c1e7-4fea-b4e3-abf161b88196"),
-                            DateCreated = new DateTime(2023, 11, 2, 22, 50, 54, 334, DateTimeKind.Local).AddTicks(6082),
+                            DateCreated = new DateTime(2023, 11, 3, 20, 25, 56, 228, DateTimeKind.Local).AddTicks(1929),
                             Description = "Description 2",
                             PatientAdmissionId = new Guid("11aea768-8434-4468-9cd7-8034a105f31a")
                         },
                         new
                         {
                             Id = new Guid("53024ef8-c1e7-4fea-b4e3-abf161b88196"),
-                            DateCreated = new DateTime(2023, 11, 2, 22, 50, 54, 334, DateTimeKind.Local).AddTicks(6085),
+                            DateCreated = new DateTime(2023, 11, 3, 20, 25, 56, 228, DateTimeKind.Local).AddTicks(1932),
                             Description = "Description 3",
                             PatientAdmissionId = new Guid("21aea768-8434-4468-9cd7-8034a105f31a")
                         },
                         new
                         {
                             Id = new Guid("13024ef8-c1e7-4fea-b4e3-abf161b88196"),
-                            DateCreated = new DateTime(2023, 11, 2, 22, 50, 54, 334, DateTimeKind.Local).AddTicks(6088),
+                            DateCreated = new DateTime(2023, 11, 3, 20, 25, 56, 228, DateTimeKind.Local).AddTicks(1935),
                             Description = "Description 4",
                             PatientAdmissionId = new Guid("31aea768-8434-4468-9cd7-8034a105f31a")
                         },
                         new
                         {
                             Id = new Guid("23024ef8-c1e7-4fea-b4e3-abf161b88196"),
-                            DateCreated = new DateTime(2023, 11, 2, 22, 50, 54, 334, DateTimeKind.Local).AddTicks(6091),
+                            DateCreated = new DateTime(2023, 11, 3, 20, 25, 56, 228, DateTimeKind.Local).AddTicks(1938),
                             Description = "Description 5",
                             PatientAdmissionId = new Guid("41aea768-8434-4468-9cd7-8034a105f31a")
                         },
                         new
                         {
                             Id = new Guid("63024ef8-c1e7-4fea-b4e3-abf161b88196"),
-                            DateCreated = new DateTime(2023, 11, 2, 22, 50, 54, 334, DateTimeKind.Local).AddTicks(6094),
+                            DateCreated = new DateTime(2023, 11, 3, 20, 25, 56, 228, DateTimeKind.Local).AddTicks(1941),
                             Description = "Description 6",
                             PatientAdmissionId = new Guid("51aea768-8434-4468-9cd7-8034a105f31a")
                         });
@@ -224,7 +224,7 @@ namespace HealthcareApp.Migrations
                         {
                             Id = new Guid("1200a45e-8914-47bf-9035-e85aaad2b261"),
                             Address = "Address 1",
-                            DateOfBirth = new DateTime(1970, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(1973, 6, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Firstname = "Michels",
                             Gender = "Male",
                             IsDeleted = false,
@@ -234,7 +234,7 @@ namespace HealthcareApp.Migrations
                         new
                         {
                             Id = new Guid("b226f2a3-8f68-4c85-b162-4b2204f8665d"),
-                            DateOfBirth = new DateTime(1978, 9, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(1992, 9, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Firstname = "Jenna",
                             Gender = "Female",
                             IsDeleted = false,
@@ -244,7 +244,7 @@ namespace HealthcareApp.Migrations
                         {
                             Id = new Guid("78eecc5e-5e7c-46d7-b472-3a1bddf289ba"),
                             Address = "Address 2",
-                            DateOfBirth = new DateTime(1987, 1, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(1997, 9, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Firstname = "Wolf",
                             Gender = "Male",
                             IsDeleted = false,
@@ -255,7 +255,7 @@ namespace HealthcareApp.Migrations
                         {
                             Id = new Guid("73776586-b4db-4769-9228-f103e8499d4f"),
                             Address = "Address 3",
-                            DateOfBirth = new DateTime(1993, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(1974, 1, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Firstname = "Nick",
                             Gender = "Male",
                             IsDeleted = false,
@@ -266,7 +266,7 @@ namespace HealthcareApp.Migrations
                         {
                             Id = new Guid("2b99eca2-1421-4789-a3e1-00da3d953abe"),
                             Address = "Address 4",
-                            DateOfBirth = new DateTime(1988, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(1994, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Firstname = "Hannah",
                             Gender = "Female",
                             IsDeleted = false,
@@ -277,7 +277,7 @@ namespace HealthcareApp.Migrations
                         {
                             Id = new Guid("211a94b3-78cd-4a6b-babd-eb8c3a18cfea"),
                             Address = "Address 5",
-                            DateOfBirth = new DateTime(1993, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(1992, 11, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Firstname = "Brock",
                             Gender = "Male",
                             IsDeleted = false,
@@ -295,13 +295,16 @@ namespace HealthcareApp.Migrations
                     b.Property<DateTime>("AdmissionDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DoctorId")
+                    b.Property<Guid?>("DoctorId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsCancelled")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsUrgent")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("PatientId")
+                    b.Property<Guid?>("PatientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -316,48 +319,54 @@ namespace HealthcareApp.Migrations
                         new
                         {
                             Id = new Guid("81aea768-8434-4468-9cd7-8034a105f31a"),
-                            AdmissionDateTime = new DateTime(2021, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            AdmissionDateTime = new DateTime(2020, 6, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoctorId = new Guid("7b2e6559-3442-416c-afda-e35232824ce4"),
+                            IsCancelled = false,
                             IsUrgent = false,
                             PatientId = new Guid("1200a45e-8914-47bf-9035-e85aaad2b261")
                         },
                         new
                         {
                             Id = new Guid("11aea768-8434-4468-9cd7-8034a105f31a"),
-                            AdmissionDateTime = new DateTime(2023, 10, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            AdmissionDateTime = new DateTime(2022, 8, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoctorId = new Guid("7b2e6559-3442-416c-afda-e35232824ce4"),
+                            IsCancelled = false,
                             IsUrgent = false,
                             PatientId = new Guid("b226f2a3-8f68-4c85-b162-4b2204f8665d")
                         },
                         new
                         {
                             Id = new Guid("21aea768-8434-4468-9cd7-8034a105f31a"),
-                            AdmissionDateTime = new DateTime(2020, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            AdmissionDateTime = new DateTime(2022, 12, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoctorId = new Guid("7b2e6559-3442-416c-afda-e35232824ce4"),
+                            IsCancelled = false,
                             IsUrgent = false,
                             PatientId = new Guid("78eecc5e-5e7c-46d7-b472-3a1bddf289ba")
                         },
                         new
                         {
                             Id = new Guid("31aea768-8434-4468-9cd7-8034a105f31a"),
-                            AdmissionDateTime = new DateTime(2023, 8, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            AdmissionDateTime = new DateTime(2022, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoctorId = new Guid("6a2e6559-3442-416c-afda-e35232824ce4"),
+                            IsCancelled = false,
                             IsUrgent = false,
                             PatientId = new Guid("73776586-b4db-4769-9228-f103e8499d4f")
                         },
                         new
                         {
                             Id = new Guid("41aea768-8434-4468-9cd7-8034a105f31a"),
-                            AdmissionDateTime = new DateTime(2020, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            AdmissionDateTime = new DateTime(2022, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoctorId = new Guid("6a2e6559-3442-416c-afda-e35232824ce4"),
+                            IsCancelled = false,
                             IsUrgent = false,
                             PatientId = new Guid("2b99eca2-1421-4789-a3e1-00da3d953abe")
                         },
                         new
                         {
                             Id = new Guid("51aea768-8434-4468-9cd7-8034a105f31a"),
-                            AdmissionDateTime = new DateTime(2023, 4, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            AdmissionDateTime = new DateTime(2020, 3, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoctorId = new Guid("6a2e6559-3442-416c-afda-e35232824ce4"),
+                            IsCancelled = false,
                             IsUrgent = false,
                             PatientId = new Guid("211a94b3-78cd-4a6b-babd-eb8c3a18cfea")
                         });
@@ -378,15 +387,11 @@ namespace HealthcareApp.Migrations
                 {
                     b.HasOne("HealthcareApp.Models.DataModels.Doctor", "Doctor")
                         .WithMany("PatientAdmissions")
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DoctorId");
 
                     b.HasOne("HealthcareApp.Models.DataModels.Patient", "Patient")
                         .WithMany("PatientAdmissions")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PatientId");
 
                     b.Navigation("Doctor");
 

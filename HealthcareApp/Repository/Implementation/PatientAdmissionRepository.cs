@@ -1,5 +1,8 @@
 ﻿using HealthcareApp.Models.DataModels;
+using HealthcareApp.Models.Shared;
 using HealthcareApp.Repository.Interface;
+using HealthcareApp.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealthcareApp.Repository.Implementation
 {
@@ -7,6 +10,56 @@ namespace HealthcareApp.Repository.Implementation
     {
         public PatientAdmissionRepository(HealthcareDbContext context) : base(context)
         {
+        }
+
+        private IQueryable<PatientAdmission> GetDetailedQuery()
+        {
+            return _context.PatientAdmissions.Include(d => d.Doctor).Include(p => p.Patient);
+        }
+
+        private async Task CheckDoctorAndPatient(Guid? specialistId, Guid? patientId)
+        {
+            if (specialistId is not null)
+            {
+                var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == specialistId && d.Title == DoctorTitle.Specialist && !d.IsDeleted);
+                if (doctor is null)
+                {
+                    throw new DbObjectNotFound($"Specialist with id {specialistId} is either deleted or not found");
+                }
+            }
+
+            if (patientId is not null)
+            {
+                var patient = await _context.Patients.FirstOrDefaultAsync(d => d.Id == patientId && !d.IsDeleted);
+                if (patient is null)
+                {
+                    throw new DbObjectNotFound($"Patient with id {patientId} is either deleted or not found");
+                }
+            }
+        }
+
+        public async Task<List<PatientAdmission>> GetAllDetailedPatientAdmissions()
+        {
+            var query = GetDetailedQuery();
+            return await query.ToListAsync();
+        }
+
+        public async Task<PatientAdmission?> GetDetailedPatientAdmission(Guid id)
+        {
+            var query = GetDetailedQuery();
+            return await query.FirstOrDefaultAsync(pa => pa.Id == id);
+        }
+
+        public override async Task Add(PatientAdmission entity)
+        {
+            await CheckDoctorAndPatient(entity.DoctorId, entity.PatientId);
+            await base.Add(entity);
+        }
+
+        public override async Task Update(PatientAdmission entity)
+        {
+            await CheckDoctorAndPatient(entity.DoctorId, entity.PatientId);
+            await base.Update(entity);
         }
     }
 }

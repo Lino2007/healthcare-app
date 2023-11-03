@@ -91,7 +91,7 @@ namespace HealthcareApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (await _patientRepository.Exists(patient.Id))
+                    if (!(await _patientRepository.Exists(patient.Id)))
                     {
                         return NotFound();
                     }
