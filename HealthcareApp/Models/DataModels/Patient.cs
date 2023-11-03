@@ -30,6 +30,11 @@ namespace HealthcareApp.Models.DataModels
 
         public bool IsDeleted { get; set; }
 
+        public string FullName
+        {
+            get { return Firstname + " " + Lastname; }
+        }
+
         public ICollection<PatientAdmission> PatientAdmissions { get; } = new List<PatientAdmission>();
 
     }

@@ -23,6 +23,11 @@ namespace HealthcareApp.Models.DataModels
         [StringLength(30, MinimumLength = 2)]
         public string Code { get; set; } = null!;
 
+        public string FullName
+        {
+            get { return Firstname + " " + Lastname; }
+        }
+
         public ICollection<PatientAdmission> PatientAdmissions { get; } = new List<PatientAdmission>();
     }
 }

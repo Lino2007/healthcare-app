@@ -1,40 +1,43 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HealthcareApp.Models.DataModels;
+using HealthcareApp.Models.Shared;
+using HealthcareApp.Repository;
+using HealthcareApp.Repository.Interface;
+using HealthcareApp.Utils;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using HealthcareApp.Models.DataModels;
-using HealthcareApp.Repository;
 
 namespace HealthcareApp.Controllers
 {
     public class PatientAdmissionsController : Controller
     {
-        private readonly HealthcareDbContext _context;
+        private readonly IPatientAdmissionRepository _patientAdmissionRepository;
+        private readonly IDoctorRepository _doctorRepository;
+        private readonly IPatientRepository _patientRepository;
 
-        public PatientAdmissionsController(HealthcareDbContext context)
+        public PatientAdmissionsController(IPatientAdmissionRepository patientAdmissionRepository, IDoctorRepository doctorRepository, IPatientRepository patientRepository)
         {
-            _context = context;
+            _patientAdmissionRepository = patientAdmissionRepository;
+            _doctorRepository = doctorRepository;
+            _patientRepository = patientRepository;
         }
 
         // GET: PatientAdmissions
         public async Task<IActionResult> Index()
         {
-            var healthcareDbContext = _context.PatientAdmissions.Include(p => p.Doctor).Include(p => p.Patient);
-            return View(await healthcareDbContext.ToListAsync());
+            return View(await _patientAdmissionRepository.GetAllDetailedPatientAdmissions());
         }
 
         // GET: PatientAdmissions/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.PatientAdmissions == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var patientAdmission = await _context.PatientAdmissions
-                .Include(p => p.Doctor)
-                .Include(p => p.Patient)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (patientAdmission == null)
+            var patientAdmission = await _patientAdmissionRepository.GetDetailedPatientAdmission(id.Value);
+            if (patientAdmission is null)
             {
                 return NotFound();
             }
@@ -43,53 +46,51 @@ namespace HealthcareApp.Controllers
         }
 
         // GET: PatientAdmissions/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Code");
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Firstname");
+            await LoadSelectLists();
             return View();
         }
 
         // POST: PatientAdmissions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,AdmissionDateTime,PatientId,DoctorId,IsUrgent")] PatientAdmission patientAdmission)
         {
             if (ModelState.IsValid)
             {
-                patientAdmission.Id = Guid.NewGuid();
-                _context.Add(patientAdmission);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    await _patientAdmissionRepository.Add(patientAdmission);
+                }
+                catch (DbObjectNotFound e)
+                {
+                    NotFound($"Patient Admission create operation failed: {e.Message}");
+                }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Code", patientAdmission.DoctorId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Firstname", patientAdmission.PatientId);
+            await LoadSelectLists(patientAdmission.DoctorId, patientAdmission.PatientId);
             return View(patientAdmission);
         }
 
         // GET: PatientAdmissions/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.PatientAdmissions == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var patientAdmission = await _context.PatientAdmissions.FindAsync(id);
-            if (patientAdmission == null)
+            var patientAdmission = await _patientAdmissionRepository.GetById(id.Value);
+            if (patientAdmission is null)
             {
                 return NotFound();
             }
-            ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Code", patientAdmission.DoctorId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Firstname", patientAdmission.PatientId);
+            await LoadSelectLists(patientAdmission.DoctorId, patientAdmission.PatientId);
             return View(patientAdmission);
         }
 
         // POST: PatientAdmissions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,AdmissionDateTime,PatientId,DoctorId,IsUrgent")] PatientAdmission patientAdmission)
@@ -103,12 +104,11 @@ namespace HealthcareApp.Controllers
             {
                 try
                 {
-                    _context.Update(patientAdmission);
-                    await _context.SaveChangesAsync();
+                    await _patientAdmissionRepository.Update(patientAdmission);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PatientAdmissionExists(patientAdmission.Id))
+                    if (!(await _patientAdmissionRepository.Exists(patientAdmission.Id)))
                     {
                         return NotFound();
                     }
@@ -117,26 +117,26 @@ namespace HealthcareApp.Controllers
                         throw;
                     }
                 }
+                catch(DbObjectNotFound e)
+                {
+                    return NotFound($"Patient Admission update operation failed: {e.Message}");
+                }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Code", patientAdmission.DoctorId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Firstname", patientAdmission.PatientId);
+            await LoadSelectLists(patientAdmission.DoctorId, patientAdmission.PatientId);
             return View(patientAdmission);
         }
 
         // GET: PatientAdmissions/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.PatientAdmissions == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var patientAdmission = await _context.PatientAdmissions
-                .Include(p => p.Doctor)
-                .Include(p => p.Patient)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (patientAdmission == null)
+            var patientAdmission = await _patientAdmissionRepository.GetDetailedPatientAdmission(id.Value);
+            if (patientAdmission is null)
             {
                 return NotFound();
             }
@@ -149,23 +149,50 @@ namespace HealthcareApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.PatientAdmissions == null)
-            {
-                return Problem("Entity set 'HealthcareDbContext.PatientAdmissions'  is null.");
-            }
-            var patientAdmission = await _context.PatientAdmissions.FindAsync(id);
+            var patientAdmission = await _patientAdmissionRepository.GetById(id);
             if (patientAdmission != null)
             {
-                _context.PatientAdmissions.Remove(patientAdmission);
+                await _patientAdmissionRepository.Delete(id);
             }
-            
-            await _context.SaveChangesAsync();
+           
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PatientAdmissionExists(Guid id)
+        private async Task<List<SelectListItem>> GetSpecialistSelectList(Guid? selectedSpecialist)
         {
-          return (_context.PatientAdmissions?.Any(e => e.Id == id)).GetValueOrDefault();
+            var specialists = await _doctorRepository.FindBy(d => d.Title == DoctorTitle.Specialist && !d.IsDeleted);
+            var selectList = new List<SelectListItem>();
+
+            foreach(var specialist in specialists)
+            {
+                selectList.Add(new SelectListItem(text: specialist.FullName, value: specialist.Id.ToString(),
+                                                  selected: IsSelected(specialist.Id, selectedSpecialist)));  
+            }
+            return selectList;
+        }
+
+        private async Task<List<SelectListItem>> GetPatientSelectList(Guid? selectedPatient)
+        {
+            var patients = await _patientRepository.FindBy(p => !p.IsDeleted);
+            var selectList = new List<SelectListItem>();
+
+            foreach (var patient in patients)
+            {
+                selectList.Add(new SelectListItem(text: patient.FullName, value: patient.Id.ToString(),
+                                                  selected: IsSelected(patient.Id, selectedPatient)));
+            }
+            return selectList;
+        }
+
+        private static bool IsSelected(Guid currentGuid, Guid? selected)
+        {
+            return selected is not null && currentGuid.Equals(selected);
+        }
+
+        private async Task LoadSelectLists(Guid? selectedSpecialist = null, Guid? selectedPatient = null)
+        {
+            ViewBag.SpecialistId = await GetSpecialistSelectList(selectedSpecialist);
+            ViewBag.PatientId = await GetPatientSelectList(selectedPatient);
         }
     }
 }

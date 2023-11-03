@@ -8,7 +8,7 @@ namespace HealthcareApp.Repository.Implementation
     // generic CRUD operation implementation for DataModel classes
     public abstract class CrudRepository<T> : ICrudRepository<T> where T : BaseDataModel
     {
-        private readonly HealthcareDbContext _context;
+        protected readonly HealthcareDbContext _context;
 
         public CrudRepository(HealthcareDbContext context)
         {
