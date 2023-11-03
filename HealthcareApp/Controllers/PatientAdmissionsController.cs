@@ -127,6 +127,38 @@ namespace HealthcareApp.Controllers
             return View(patientAdmission);
         }
 
+        public async Task<IActionResult> CancelAdmission(Guid id)
+        {
+            var patientAdmission = await _patientAdmissionRepository.GetById(id);
+            if (patientAdmission is null)
+            {
+                return NotFound($"Patient Admission (id: {id}) not found, cancellation failed.");
+            }
+
+            patientAdmission.IsCancelled = true;
+            try
+            {
+                await _patientAdmissionRepository.Update(patientAdmission);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!(await _patientAdmissionRepository.Exists(patientAdmission.Id)))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            catch (DbObjectNotFound e)
+            {
+                return NotFound($"Patient Admission update operation failed: {e.Message}");
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+ 
         // GET: PatientAdmissions/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {

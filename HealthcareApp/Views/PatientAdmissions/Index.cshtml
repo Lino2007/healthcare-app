@@ -9,20 +9,41 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="startDate">Start Date:</label>
+                <input type="date" class="form-control" id="startDate">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="endDate">End Date:</label>
+                <input type="date" class="form-control" id="endDate">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-primary" id="filterButton">Filter</button>
+        </div>
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.AdmissionDateTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsUrgent)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Patient)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.AdmissionDateTime)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Doctor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsUrgent)
             </th>
             <th></th>
         </tr>
@@ -31,21 +52,27 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Patient.FullName)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.AdmissionDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Doctor.FullNameAndCode)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsUrgent)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Patient.Firstname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Doctor.Code)
-            </td>
-            <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> 
+                   
+                        @if (!item.IsCancelled)
+                        {
+                           <span>| </span><a asp-action="CancelAdmission" asp-route-id="@item.Id">Cancel Admission</a> 
+                        }
+                    
             </td>
         </tr>
 }
