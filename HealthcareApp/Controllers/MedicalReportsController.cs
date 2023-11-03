@@ -1,43 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HealthcareApp.Models.DataModels;
 using HealthcareApp.Repository;
+using HealthcareApp.Repository.Interface;
 
 namespace HealthcareApp.Controllers
 {
     public class MedicalReportsController : Controller
     {
         private readonly HealthcareDbContext _context;
+        private readonly IMedicalReportRepository _medicalReportRepository;
 
-        public MedicalReportsController(HealthcareDbContext context)
+        public MedicalReportsController(HealthcareDbContext context, IMedicalReportRepository medicalReportRepository)
         {
             _context = context;
+            _medicalReportRepository = medicalReportRepository;
         }
+
 
         // GET: MedicalReports
         public async Task<IActionResult> Index()
         {
-            var healthcareDbContext = _context.MedicalReports.Include(m => m.PatientAdmission);
-            return View(await healthcareDbContext.ToListAsync());
+            return View(await _medicalReportRepository.GetAllDetailedMedicalReports());
         }
 
         // GET: MedicalReports/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.MedicalReports == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var medicalReport = await _context.MedicalReports
-                .Include(m => m.PatientAdmission)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (medicalReport == null)
+            var medicalReport = await _medicalReportRepository.GetDetailedMedicalReport(id.Value);
+            if (medicalReport is null)
             {
                 return NotFound();
             }
@@ -53,17 +50,13 @@ namespace HealthcareApp.Controllers
         }
 
         // POST: MedicalReports/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Description,DateCreated,PatientAdmissionId")] MedicalReport medicalReport)
         {
             if (ModelState.IsValid)
             {
-                medicalReport.Id = Guid.NewGuid();
-                _context.Add(medicalReport);
-                await _context.SaveChangesAsync();
+                await _medicalReportRepository.Add(medicalReport);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PatientAdmissionId"] = new SelectList(_context.PatientAdmissions, "Id", "Id", medicalReport.PatientAdmissionId);
@@ -73,13 +66,13 @@ namespace HealthcareApp.Controllers
         // GET: MedicalReports/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.MedicalReports == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var medicalReport = await _context.MedicalReports.FindAsync(id);
-            if (medicalReport == null)
+            var medicalReport = await _medicalReportRepository.GetDetailedMedicalReport(id.Value);
+            if (medicalReport is null)
             {
                 return NotFound();
             }
@@ -88,8 +81,6 @@ namespace HealthcareApp.Controllers
         }
 
         // POST: MedicalReports/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Description,DateCreated,PatientAdmissionId")] MedicalReport medicalReport)
@@ -103,12 +94,11 @@ namespace HealthcareApp.Controllers
             {
                 try
                 {
-                    _context.Update(medicalReport);
-                    await _context.SaveChangesAsync();
+                   await _medicalReportRepository.Update(medicalReport);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MedicalReportExists(medicalReport.Id))
+                    if (!(await _medicalReportRepository.Exists(medicalReport.Id)))
                     {
                         return NotFound();
                     }
@@ -126,15 +116,13 @@ namespace HealthcareApp.Controllers
         // GET: MedicalReports/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.MedicalReports == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            var medicalReport = await _context.MedicalReports
-                .Include(m => m.PatientAdmission)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (medicalReport == null)
+            var medicalReport = await _medicalReportRepository.GetDetailedMedicalReport(id.Value);
+            if (medicalReport is null)
             {
                 return NotFound();
             }
@@ -147,23 +135,13 @@ namespace HealthcareApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.MedicalReports == null)
+            var medicalReport = await _medicalReportRepository.GetById(id);
+            if (medicalReport is not null)
             {
-                return Problem("Entity set 'HealthcareDbContext.MedicalReports'  is null.");
+                await _medicalReportRepository.Delete(id);
             }
-            var medicalReport = await _context.MedicalReports.FindAsync(id);
-            if (medicalReport != null)
-            {
-                _context.MedicalReports.Remove(medicalReport);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool MedicalReportExists(Guid id)
-        {
-          return (_context.MedicalReports?.Any(e => e.Id == id)).GetValueOrDefault();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
