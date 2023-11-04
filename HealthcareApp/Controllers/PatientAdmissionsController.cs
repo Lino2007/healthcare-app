@@ -169,7 +169,7 @@ namespace HealthcareApp.Controllers
 
             return RedirectToAction(nameof(Index));
         }
- 
+
         // GET: PatientAdmissions/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {

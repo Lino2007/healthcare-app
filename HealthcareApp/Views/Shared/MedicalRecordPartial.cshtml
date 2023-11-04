@@ -1,0 +1,29 @@
+﻿@model HealthcareApp.Models.DataModels.MedicalReport
+
+<div>
+    <h4>Medical Report</h4>
+    <hr />
+    @if (Model is not null)
+    {
+        <dl class="row">
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+                <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.DateCreated)
+            </dd>
+
+        </dl>
+    }
+    else
+    {
+        <p>No medical report for associated admission, click here to create it.</p>
+    }
+</div>
+

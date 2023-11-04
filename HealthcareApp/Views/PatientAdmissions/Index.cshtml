@@ -48,7 +48,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model.PatientAdmissions) {
-        <tr class="@(item.IsUrgent ? "urgent-row" : "") @(item.AdmissionDateTime < DateTime.Now ? "completed-row": "")">
+        <tr class="@(item.AdmissionDateTime < DateTime.Now ? "completed-row": "") @(item.IsUrgent ? "urgent-row" : "") adm-row" id="@item.Id">
             <td>
                 @Html.DisplayFor(modelItem => item.Patient.FullName)
             </td>
@@ -77,7 +77,42 @@
     <div class="col-auto"><span class="badge urgent-row">Urgent</span></div>          
     <div class="col-auto"><span class="badge completed-row  text-dark">Completed</span></div>
 </div>
+<br/>
+<div id="medRecPartialView" class="mt-6"></div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('.adm-row').on("dblclick", function (value) {
+            let admissionId = value.currentTarget.id;
+            $.ajax({
+                url: '/MedicalReports/Partial', 
+                type: 'GET',
+                data: { admissionId: admissionId },
+                success: function (data) {
+                    // Handle the response data here
+                    $('#medRecPartialView').html(data);
+                },
+                error: function () {
+                    alert('Error occurred while fetching data.');
+                }
+            });
+            
+            $.get(`MedicalReports/Partial/${admissionId}`, function(data, status){
+                $('#medRecPartialView').html(data);
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $('.table tbody tr').on("dblclick", function () {
+            $('.table tbody tr').removeClass('selected');
+            $(this).addClass('selected');
+        });
+    });
+</script>
 }
+
+
+

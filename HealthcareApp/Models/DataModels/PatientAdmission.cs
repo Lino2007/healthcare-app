@@ -11,10 +11,10 @@ namespace HealthcareApp.Models.DataModels
         public DateTime AdmissionDateTime { get; set; }
 
         [Display(Name = "Patient")]
-        public Guid? PatientId { get; set; }
+        public Guid PatientId { get; set; }
 
         [Display(Name = "Doctor")]
-        public Guid? DoctorId { get; set; }
+        public Guid DoctorId { get; set; }
 
         [Display(Name = "Urgent")]
         public bool IsUrgent { get; set; }
@@ -23,10 +23,10 @@ namespace HealthcareApp.Models.DataModels
         public bool IsCancelled { get; set; }
 
         [ForeignKey(nameof(PatientId))]
-        public Patient? Patient { get; init; } 
+        public Patient Patient { get; init; } = null!;
 
         [ForeignKey(nameof(DoctorId))]
-        public Doctor? Doctor { get; init; } 
+        public Doctor Doctor { get; init; } = null!;
 
     }
 }

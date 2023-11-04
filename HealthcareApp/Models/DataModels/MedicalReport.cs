@@ -17,7 +17,7 @@ namespace HealthcareApp.Models.DataModels
 
         [Display(Name = "Patient Admission")]
         [ForeignKey(nameof(PatientAdmissionId))]
-        public PatientAdmission? PatientAdmission { get; init; } = null!;
+        public PatientAdmission PatientAdmission { get; init; } = null!;
 
     }
 }
