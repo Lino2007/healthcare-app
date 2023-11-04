@@ -1,5 +1,6 @@
 ﻿using HealthcareApp.Models.DataModels;
 using HealthcareApp.Models.Shared;
+using HealthcareApp.Models.ViewModels;
 using HealthcareApp.Repository;
 using HealthcareApp.Repository.Interface;
 using HealthcareApp.Utils;
@@ -23,9 +24,19 @@ namespace HealthcareApp.Controllers
         }
 
         // GET: PatientAdmissions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate)
         {
-            return View(await _patientAdmissionRepository.GetAllDetailedPatientAdmissions());
+            if(startDate > endDate)
+            {
+                ViewData["ErrorMessage"] = "Start date cannot be after end date, please check your inputs.";
+                startDate = endDate = null;
+            }
+            else
+            {
+                ViewData["ErrorMessage"] = null;
+            }
+            var patientAdmissionVM = new PatientAdmissionViewModel() { PatientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(startDate , endDate) };
+            return View(patientAdmissionVM);
         }
 
         // GET: PatientAdmissions/Details/5

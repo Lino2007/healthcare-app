@@ -38,9 +38,17 @@ namespace HealthcareApp.Repository.Implementation
             }
         }
 
-        public async Task<List<PatientAdmission>> GetAllDetailedPatientAdmissions()
+        public async Task<List<PatientAdmission>> GetAllDetailedPatientAdmissions(DateTime? startDate, DateTime? endDate)
         {
             var query = GetDetailedQuery();
+            if (startDate is not null)
+            {
+                query = query.Where(p => p.AdmissionDateTime > startDate);
+            }
+            if (endDate is not null)
+            {
+                query = query.Where(p => p.AdmissionDateTime < endDate);
+            }
             return await query.ToListAsync();
         }
 

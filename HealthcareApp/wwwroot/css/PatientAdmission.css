@@ -1,0 +1,7 @@
+﻿.urgent-row {
+    background-color: lightcoral;
+}
+
+.completed-row {
+    background-color: lightgray !important;
+}
