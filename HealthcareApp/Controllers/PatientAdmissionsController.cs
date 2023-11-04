@@ -1,5 +1,6 @@
 ﻿using HealthcareApp.Models.DataModels;
 using HealthcareApp.Models.Shared;
+using HealthcareApp.Models.ViewModels;
 using HealthcareApp.Repository;
 using HealthcareApp.Repository.Interface;
 using HealthcareApp.Utils;
@@ -23,9 +24,19 @@ namespace HealthcareApp.Controllers
         }
 
         // GET: PatientAdmissions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate)
         {
-            return View(await _patientAdmissionRepository.GetAllDetailedPatientAdmissions());
+            if(startDate > endDate)
+            {
+                ViewData["ErrorMessage"] = "Start date cannot be after end date, please check your inputs.";
+                startDate = endDate = null;
+            }
+            else
+            {
+                ViewData["ErrorMessage"] = null;
+            }
+            var patientAdmissionVM = new PatientAdmissionViewModel() { PatientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(startDate , endDate) };
+            return View(patientAdmissionVM);
         }
 
         // GET: PatientAdmissions/Details/5
@@ -127,6 +138,38 @@ namespace HealthcareApp.Controllers
             return View(patientAdmission);
         }
 
+        public async Task<IActionResult> CancelAdmission(Guid id)
+        {
+            var patientAdmission = await _patientAdmissionRepository.GetById(id);
+            if (patientAdmission is null)
+            {
+                return NotFound($"Patient Admission (id: {id}) not found, cancellation failed.");
+            }
+
+            patientAdmission.IsCancelled = true;
+            try
+            {
+                await _patientAdmissionRepository.Update(patientAdmission);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!(await _patientAdmissionRepository.Exists(patientAdmission.Id)))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            catch (DbObjectNotFound e)
+            {
+                return NotFound($"Patient Admission update operation failed: {e.Message}");
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+ 
         // GET: PatientAdmissions/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {

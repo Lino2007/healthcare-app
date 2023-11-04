@@ -25,7 +25,12 @@ namespace HealthcareApp.Models.DataModels
 
         public string FullName
         {
-            get { return Firstname + " " + Lastname; }
+            get => Firstname + " " + Lastname; 
+        }
+
+        public string FullNameAndCode
+        {
+            get => FullName + " - " + Code; 
         }
 
         public ICollection<PatientAdmission> PatientAdmissions { get; } = new List<PatientAdmission>();
