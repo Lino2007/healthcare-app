@@ -11,7 +11,5 @@ namespace HealthcareApp.Models.ViewModels
 
         [Display(Name = "End Date")]
         public DateTime? EndDate { get; set; }
-
-        public PatientAdmission? PatientAdmission { get; } = new();
     }
 }

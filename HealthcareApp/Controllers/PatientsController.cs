@@ -3,16 +3,19 @@ using Microsoft.EntityFrameworkCore;
 using HealthcareApp.Models.DataModels;
 using HealthcareApp.Repository;
 using HealthcareApp.Repository.Interface;
+using HealthcareApp.Models.ViewModels;
 
 namespace HealthcareApp.Controllers
 {
     public class PatientsController : Controller
     {
         private readonly IPatientRepository _patientRepository;
+        private readonly IPatientAdmissionRepository _patientAdmissionRepository;
 
-        public PatientsController(IPatientRepository patientRepository)
+        public PatientsController(IPatientRepository patientRepository, IPatientAdmissionRepository patientAdmissionRepository)
         {
             _patientRepository = patientRepository;
+            _patientAdmissionRepository = patientAdmissionRepository;
         }
 
         // GET: Patients
@@ -34,7 +37,9 @@ namespace HealthcareApp.Controllers
             {
                 return NotFound();
             }
-
+            var patientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(null, null, patient.Id);
+            ViewBag.PatientAdmissionsViewModel = new PatientAdmissionViewModel() { PatientAdmissions = patientAdmissions};
+            ViewBag.PatientDetailId = id.Value;
             return View(patient);
         }
 

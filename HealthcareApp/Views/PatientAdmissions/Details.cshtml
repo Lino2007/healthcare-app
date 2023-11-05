@@ -9,4 +9,7 @@
 
 
 @await Html.PartialAsync("PatientAdmissionPartial", Model)
-@await Html.PartialAsync("MedicalRecordPartial", (MedicalReportPartialViewModel) ViewBag.MedicalReport)
+@if (!Model.IsCancelled)
+{
+    @await Html.PartialAsync("MedicalRecordPartial", (MedicalReportPartialViewModel) ViewBag.MedicalReport)
+}

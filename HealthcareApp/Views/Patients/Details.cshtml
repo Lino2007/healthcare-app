@@ -1,7 +1,9 @@
-﻿@model HealthcareApp.Models.DataModels.Patient
+﻿@using HealthcareApp.Models.ViewModels
+@model HealthcareApp.Models.DataModels.Patient
 
 @{
     ViewData["Title"] = "Details";
+    ViewData["PatientPage"] = "active";
 }
 
 <h1>Details</h1>
@@ -52,3 +54,6 @@
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+@await Html.PartialAsync("PatientAdmissionListPartial", (PatientAdmissionViewModel) ViewBag.PatientAdmissionsViewModel)
+

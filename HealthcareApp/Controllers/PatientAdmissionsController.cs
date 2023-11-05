@@ -27,7 +27,6 @@ namespace HealthcareApp.Controllers
         }
 
 
-
         // GET: PatientAdmissions
         public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate)
         {
@@ -40,7 +39,7 @@ namespace HealthcareApp.Controllers
             {
                 ViewData["ErrorMessage"] = null;
             }
-            var patientAdmissionVM = new PatientAdmissionViewModel() { PatientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(startDate , endDate) };
+            var patientAdmissionVM = new PatientAdmissionViewModel() { PatientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(startDate , endDate, null) };
             return View(patientAdmissionVM);
         }
 
@@ -65,10 +64,16 @@ namespace HealthcareApp.Controllers
         }
 
         // GET: PatientAdmissions/Create
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(Guid? id)
         {
+            var patientAdmission = new PatientAdmission();
+            if (id is not null)
+            {
+                patientAdmission.PatientId = id.Value;  
+            }
+            patientAdmission.AdmissionDateTime = DateTime.Now.Date.AddDays(1);
             await LoadSelectLists();
-            return View();
+            return View(patientAdmission);
         }
 
         // POST: PatientAdmissions/Create
@@ -80,13 +85,14 @@ namespace HealthcareApp.Controllers
             {
                 try
                 {
+                    patientAdmission.Id = new Guid();
                     await _patientAdmissionRepository.Add(patientAdmission);
                 }
                 catch (DbObjectNotFound e)
                 {
                     NotFound($"Patient Admission create operation failed: {e.Message}");
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Patients", new { id = patientAdmission.PatientId });
             }
             await LoadSelectLists(patientAdmission.DoctorId, patientAdmission.PatientId);
             return View(patientAdmission);
@@ -140,13 +146,13 @@ namespace HealthcareApp.Controllers
                 {
                     return NotFound($"Patient Admission update operation failed: {e.Message}");
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Patients", new { id = patientAdmission.PatientId });
             }
             await LoadSelectLists(patientAdmission.DoctorId, patientAdmission.PatientId);
             return View(patientAdmission);
         }
 
-        public async Task<IActionResult> CancelAdmission(Guid id)
+        public async Task<IActionResult> CancelAdmission(Guid id, bool redirectToPatient)
         {
             var patientAdmission = await _patientAdmissionRepository.GetById(id);
             if (patientAdmission is null)
@@ -173,6 +179,10 @@ namespace HealthcareApp.Controllers
             catch (DbObjectNotFound e)
             {
                 return NotFound($"Patient Admission update operation failed: {e.Message}");
+            }
+            if (redirectToPatient)
+            {
+                return RedirectToAction("Details", "Patients", new { id = patientAdmission.PatientId });
             }
 
             return RedirectToAction(nameof(Index));
