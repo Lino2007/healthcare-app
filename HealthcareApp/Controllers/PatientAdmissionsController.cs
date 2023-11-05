@@ -16,14 +16,16 @@ namespace HealthcareApp.Controllers
         private readonly IDoctorRepository _doctorRepository;
         private readonly IPatientRepository _patientRepository;
         private readonly IMedicalReportRepository _medicalReportRepository;
+        private readonly PdfGenerator _pdfGenerator;
 
         public PatientAdmissionsController(IPatientAdmissionRepository patientAdmissionRepository, IDoctorRepository doctorRepository, 
-                                           IPatientRepository patientRepository, IMedicalReportRepository medicalRepository)
+                                           IPatientRepository patientRepository, IMedicalReportRepository medicalRepository, PdfGenerator pdfGenerator)
         {
             _patientAdmissionRepository = patientAdmissionRepository;
             _doctorRepository = doctorRepository;
             _patientRepository = patientRepository;
             _medicalReportRepository = medicalRepository;
+            _pdfGenerator = pdfGenerator;
         }
 
 
@@ -217,6 +219,13 @@ namespace HealthcareApp.Controllers
             }
            
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> GeneratePdf()
+        {
+            var patientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(null, null, null);
+            var x = _pdfGenerator.GetPdf(patientAdmissions);
+            return File(x, "application/pdf");
         }
 
         private async Task<List<SelectListItem>> GetSpecialistSelectList(Guid? selectedSpecialist)
