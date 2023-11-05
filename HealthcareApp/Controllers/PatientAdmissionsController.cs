@@ -1,7 +1,6 @@
 ﻿using HealthcareApp.Models.DataModels;
 using HealthcareApp.Models.Shared;
 using HealthcareApp.Models.ViewModels;
-using HealthcareApp.Repository;
 using HealthcareApp.Repository.Interface;
 using HealthcareApp.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +40,7 @@ namespace HealthcareApp.Controllers
             {
                 ViewData["ErrorMessage"] = null;
             }
-            var patientAdmissionVM = new PatientAdmissionViewModel() { PatientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(startDate , endDate, null) };
+            var patientAdmissionVM = new PatientAdmissionViewModel() { PatientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(startDate , endDate, null), StartDate = startDate, EndDate = endDate };
             return View(patientAdmissionVM);
         }
 
@@ -221,10 +220,11 @@ namespace HealthcareApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> GeneratePdf()
+        public async Task<IActionResult> GeneratePdf(DateTime? startDate, DateTime? endDate, Guid? patientId)
         {
-            var patientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(null, null, null);
-            var x = _pdfGenerator.GetPdf(patientAdmissions);
+            var patientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(startDate, endDate, patientId);
+            var admissionReportList = await _medicalReportRepository.GetAdmissionMedicalReportList(patientAdmissions);
+            var x = _pdfGenerator.GetPdf(admissionReportList);
             return File(x, "application/pdf");
         }
 
