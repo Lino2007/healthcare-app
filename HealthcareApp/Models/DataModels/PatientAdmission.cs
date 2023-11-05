@@ -23,10 +23,10 @@ namespace HealthcareApp.Models.DataModels
         public bool IsCancelled { get; set; }
 
         [ForeignKey(nameof(PatientId))]
-        public Patient Patient { get; init; } = null!;
+        public Patient? Patient { get; init; }
 
         [ForeignKey(nameof(DoctorId))]
-        public Doctor Doctor { get; init; } = null!;
+        public Doctor? Doctor { get; init; }
 
     }
 }

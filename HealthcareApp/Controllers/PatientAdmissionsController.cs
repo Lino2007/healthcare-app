@@ -15,13 +15,18 @@ namespace HealthcareApp.Controllers
         private readonly IPatientAdmissionRepository _patientAdmissionRepository;
         private readonly IDoctorRepository _doctorRepository;
         private readonly IPatientRepository _patientRepository;
+        private readonly IMedicalReportRepository _medicalReportRepository;
 
-        public PatientAdmissionsController(IPatientAdmissionRepository patientAdmissionRepository, IDoctorRepository doctorRepository, IPatientRepository patientRepository)
+        public PatientAdmissionsController(IPatientAdmissionRepository patientAdmissionRepository, IDoctorRepository doctorRepository, 
+                                           IPatientRepository patientRepository, IMedicalReportRepository medicalRepository)
         {
             _patientAdmissionRepository = patientAdmissionRepository;
             _doctorRepository = doctorRepository;
             _patientRepository = patientRepository;
+            _medicalReportRepository = medicalRepository;
         }
+
+
 
         // GET: PatientAdmissions
         public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate)
@@ -48,11 +53,14 @@ namespace HealthcareApp.Controllers
             }
 
             var patientAdmission = await _patientAdmissionRepository.GetDetailedPatientAdmission(id.Value);
+            
+            //ViewBag.MedicalRecord
             if (patientAdmission is null)
             {
                 return NotFound();
             }
-
+            var medicalReport = (await _medicalReportRepository.FindBy(m => m.PatientAdmissionId == patientAdmission.Id)).FirstOrDefault();
+            ViewBag.MedicalReport = new MedicalReportPartialViewModel() { MedicalReport = medicalReport, AdmissionId =  patientAdmission.Id };
             return View(patientAdmission);
         }
 

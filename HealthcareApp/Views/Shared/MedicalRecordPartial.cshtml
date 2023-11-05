@@ -2,6 +2,10 @@
 
 <div>
     <h4>Medical Report</h4>
+    @if (Model.MedicalReport is not null)
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.MedicalReport.Id">Edit</a> 
+    }
     <hr />
     @if (Model.MedicalReport is not null)
     {
@@ -23,7 +27,6 @@
     }
     else
     {
-        // <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
         <p>No medical report for associated admission, <a asp-controller="MedicalReports" asp-action="Create" asp-route-id="@Model.AdmissionId">click here</a> to create it.</p>
     }
 </div>

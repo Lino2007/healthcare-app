@@ -2,117 +2,16 @@
 @model HealthcareApp.Models.ViewModels.PatientAdmissionViewModel
 @{
     ViewData["Title"] = "Patient Admission";
+    ViewData["Name"] = "Test";
 }
 
 <h1>@ViewData["Title"] List</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<div class="container">
-    <div class="row">
-          <form asp-action="Index" >
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" type="date" class="form-control">
-            </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" type="date" class="form-control">
-            </div>
-            <div class="form-group">
-                @if (ViewData["ErrorMessage"] != null)
-                {
-                    <span class="text-danger">@ViewData["ErrorMessage"]</span>
-                }
-                <input type="submit" value="Filter" class="btn btn-primary" />
-            </div>
-         </form>
-    </div>
-</div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameForInnerType((PatientAdmission admission) => admission.Patient)
-            </th>
-            <th>
-                @Html.DisplayNameForInnerType((PatientAdmission admission) => admission.AdmissionDateTime)
-            </th>
-            <th>
-                @Html.DisplayNameForInnerType((PatientAdmission admission) => admission.Doctor)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.PatientAdmissions) {
-        <tr class="@(item.AdmissionDateTime < DateTime.Now ? "completed-row": "") @(item.IsUrgent ? "urgent-row" : "") adm-row" id="@item.Id">
-            <td>
-                @Html.DisplayFor(modelItem => item.Patient.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AdmissionDateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Doctor.FullNameAndCode)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                @if (!item.IsCancelled && item.AdmissionDateTime > DateTime.Now)
-                {
-                    <span>| </span><a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <span>| </span><a asp-action="CancelAdmission" asp-route-id="@item.Id">Cancel Admission</a> 
-                }
-                    
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-<br />
-<div class="row">
-    <div class="col-auto"><p>Table legend: </p></div>
-    <div class="col-auto"><span class="badge urgent-row">Urgent</span></div>          
-    <div class="col-auto"><span class="badge completed-row  text-dark">Completed</span></div>
-</div>
-<br/>
-<div id="medRecPartialView" class="mt-6"></div>
+@await Html.PartialAsync("PatientAdmissionListPartial", Model)
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script type="text/javascript">
-    $(document).ready(function () {
-        $('.adm-row').on("dblclick", function (value) {
-            let admissionId = value.currentTarget.id;
-            $.ajax({
-                url: '/MedicalReports/Partial', 
-                type: 'GET',
-                data: { admissionId: admissionId },
-                success: function (data) {
-                    // Handle the response data here
-                    $('#medRecPartialView').html(data);
-                },
-                error: function () {
-                    alert('Error occurred while fetching data.');
-                }
-            });
-            
-            $.get(`MedicalReports/Partial/${admissionId}`, function(data, status){
-                $('#medRecPartialView').html(data);
-            });
-        });
-    });
-
-    $(document).ready(function () {
-        $('.table tbody tr').on("dblclick", function () {
-            $('.table tbody tr').removeClass('selected');
-            $(this).addClass('selected');
-        });
-    });
-</script>
 }
-
 
 
