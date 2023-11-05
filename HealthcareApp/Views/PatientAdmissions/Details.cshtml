@@ -1,4 +1,5 @@
-﻿@model HealthcareApp.Models.DataModels.PatientAdmission
+﻿@using HealthcareApp.Models.ViewModels
+@model HealthcareApp.Models.DataModels.PatientAdmission
 
 @{
     ViewData["Title"] = "Details";
@@ -6,37 +7,9 @@
 
 <h1>Details</h1>
 
-<div>
-    <h4>PatientAdmission</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AdmissionDateTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AdmissionDateTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsUrgent)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsUrgent)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Patient)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Patient.Firstname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Doctor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Doctor.Code)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@await Html.PartialAsync("PatientAdmissionPartial", Model)
+@if (!Model.IsCancelled)
+{
+    @await Html.PartialAsync("MedicalRecordPartial", (MedicalReportPartialViewModel) ViewBag.MedicalReport)
+}

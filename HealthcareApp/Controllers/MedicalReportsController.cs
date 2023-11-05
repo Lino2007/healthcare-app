@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using HealthcareApp.Models.DataModels;
 using HealthcareApp.Repository;
 using HealthcareApp.Repository.Interface;
+using HealthcareApp.Models.ViewModels;
 
 namespace HealthcareApp.Controllers
 {
@@ -11,18 +12,33 @@ namespace HealthcareApp.Controllers
     {
         private readonly HealthcareDbContext _context;
         private readonly IMedicalReportRepository _medicalReportRepository;
+        private readonly IPatientAdmissionRepository _patientAdmissionRepository;
 
-        public MedicalReportsController(HealthcareDbContext context, IMedicalReportRepository medicalReportRepository)
+        public MedicalReportsController(HealthcareDbContext context, IMedicalReportRepository medicalReportRepository, IPatientAdmissionRepository patientAdmissionRepository)
         {
             _context = context;
             _medicalReportRepository = medicalReportRepository;
+            _patientAdmissionRepository = patientAdmissionRepository;
         }
-
 
         // GET: MedicalReports
         public async Task<IActionResult> Index()
         {
             return View(await _medicalReportRepository.GetAllDetailedMedicalReports());
+        }
+
+        // GET: MedicalReports/Partial/{Id}
+        public async Task<IActionResult> Partial(Guid? admissionId)
+        {
+            MedicalReport? medicalReport = null;
+            if (admissionId is not null)
+            {
+                medicalReport = (await _medicalReportRepository.FindBy(m => m.PatientAdmissionId == admissionId)).FirstOrDefault();
+            }
+            
+            var partViewModel = new MedicalReportPartialViewModel() { MedicalReport = medicalReport, AdmissionId = admissionId.Value };
+
+            return PartialView("MedicalRecordPartial", partViewModel);
         }
 
         // GET: MedicalReports/Details/5
@@ -43,10 +59,16 @@ namespace HealthcareApp.Controllers
         }
 
         // GET: MedicalReports/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(Guid id)
         {
-            ViewData["PatientAdmissionId"] = new SelectList(_context.PatientAdmissions, "Id", "Id");
-            return View();
+            var admission = await _patientAdmissionRepository.GetDetailedPatientAdmission(id);
+            if (admission is null)
+            {
+                return NotFound($"Admission with id {id} not found.");
+            }
+            ViewBag.PatientAdmission = admission;
+            var medicalReport = new MedicalReport() { PatientAdmissionId = id };
+            return View(medicalReport);
         }
 
         // POST: MedicalReports/Create
@@ -59,7 +81,8 @@ namespace HealthcareApp.Controllers
                 await _medicalReportRepository.Add(medicalReport);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PatientAdmissionId"] = new SelectList(_context.PatientAdmissions, "Id", "Id", medicalReport.PatientAdmissionId);
+            var admission = await _patientAdmissionRepository.GetDetailedPatientAdmission(medicalReport.PatientAdmissionId);
+            ViewBag.PatientAdmission = admission;
             return View(medicalReport);
         }
 
@@ -76,7 +99,9 @@ namespace HealthcareApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["PatientAdmissionId"] = new SelectList(_context.PatientAdmissions, "Id", "Id", medicalReport.PatientAdmissionId);
+
+            var admission = await _patientAdmissionRepository.GetDetailedPatientAdmission(medicalReport.PatientAdmissionId);
+            ViewBag.PatientAdmission = admission;
             return View(medicalReport);
         }
 
@@ -109,7 +134,8 @@ namespace HealthcareApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PatientAdmissionId"] = new SelectList(_context.PatientAdmissions, "Id", "Id", medicalReport.PatientAdmissionId);
+            var admission = await _patientAdmissionRepository.GetDetailedPatientAdmission(medicalReport.PatientAdmissionId);
+            ViewBag.PatientAdmission = admission;
             return View(medicalReport);
         }
 

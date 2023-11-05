@@ -38,7 +38,7 @@ namespace HealthcareApp.Repository.Implementation
             }
         }
 
-        public async Task<List<PatientAdmission>> GetAllDetailedPatientAdmissions(DateTime? startDate, DateTime? endDate)
+        public async Task<List<PatientAdmission>> GetAllDetailedPatientAdmissions(DateTime? startDate, DateTime? endDate, Guid? patientId = null)
         {
             var query = GetDetailedQuery();
             if (startDate is not null)
@@ -48,6 +48,10 @@ namespace HealthcareApp.Repository.Implementation
             if (endDate is not null)
             {
                 query = query.Where(p => p.AdmissionDateTime < endDate);
+            }
+            if (patientId is not null)
+            {
+                query = query.Where(p => p.PatientId == patientId);
             }
             return await query.ToListAsync();
         }

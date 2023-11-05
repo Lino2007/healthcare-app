@@ -3,5 +3,17 @@
 }
 
 .completed-row {
-    background-color: lightgray !important;
+    background-color: lightgray;
+}
+
+.urgent-row:hover {
+    background-color: rgb(222, 124, 124);
+}
+
+.completed-row:hover {
+    background-color: rgb(173, 172, 172);
+}
+
+.selected {
+    background-color: blue !important;
 }
