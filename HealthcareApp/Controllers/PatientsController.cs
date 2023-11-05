@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HealthcareApp.Models.DataModels;
-using HealthcareApp.Repository;
 using HealthcareApp.Repository.Interface;
 using HealthcareApp.Models.ViewModels;
 

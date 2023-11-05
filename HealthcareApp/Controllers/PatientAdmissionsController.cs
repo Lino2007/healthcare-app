@@ -1,7 +1,6 @@
 ﻿using HealthcareApp.Models.DataModels;
 using HealthcareApp.Models.Shared;
 using HealthcareApp.Models.ViewModels;
-using HealthcareApp.Repository;
 using HealthcareApp.Repository.Interface;
 using HealthcareApp.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +15,16 @@ namespace HealthcareApp.Controllers
         private readonly IDoctorRepository _doctorRepository;
         private readonly IPatientRepository _patientRepository;
         private readonly IMedicalReportRepository _medicalReportRepository;
+        private readonly PdfGenerator _pdfGenerator;
 
         public PatientAdmissionsController(IPatientAdmissionRepository patientAdmissionRepository, IDoctorRepository doctorRepository, 
-                                           IPatientRepository patientRepository, IMedicalReportRepository medicalRepository)
+                                           IPatientRepository patientRepository, IMedicalReportRepository medicalRepository, PdfGenerator pdfGenerator)
         {
             _patientAdmissionRepository = patientAdmissionRepository;
             _doctorRepository = doctorRepository;
             _patientRepository = patientRepository;
             _medicalReportRepository = medicalRepository;
+            _pdfGenerator = pdfGenerator;
         }
 
 
@@ -39,7 +40,7 @@ namespace HealthcareApp.Controllers
             {
                 ViewData["ErrorMessage"] = null;
             }
-            var patientAdmissionVM = new PatientAdmissionViewModel() { PatientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(startDate , endDate, null) };
+            var patientAdmissionVM = new PatientAdmissionViewModel() { PatientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(startDate , endDate, null), StartDate = startDate, EndDate = endDate };
             return View(patientAdmissionVM);
         }
 
@@ -217,6 +218,14 @@ namespace HealthcareApp.Controllers
             }
            
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> GeneratePdf(DateTime? startDate, DateTime? endDate, Guid? patientId)
+        {
+            var patientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(startDate, endDate, patientId);
+            var admissionReportList = await _medicalReportRepository.GetAdmissionMedicalReportList(patientAdmissions);
+            var x = _pdfGenerator.GetPdf(admissionReportList);
+            return File(x, "application/pdf");
         }
 
         private async Task<List<SelectListItem>> GetSpecialistSelectList(Guid? selectedSpecialist)

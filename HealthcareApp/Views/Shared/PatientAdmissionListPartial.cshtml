@@ -2,6 +2,7 @@
 @model HealthcareApp.Models.ViewModels.PatientAdmissionViewModel
 <p>
     <a asp-action="Create" asp-controller="PatientAdmissions" asp-route-id="@ViewData["PatientDetailId"]">Create New</a>
+    @Html.ActionLink("Download", "GeneratePdf", "PatientAdmissions", new {startDate = Model.StartDate, endDate = Model.EndDate, patientId = ViewData["PatientDetailId"]}, new { target = "_blank" })
 </p>
 @if (ViewData["ShowFilter"] is not null) {
 <div class="container">

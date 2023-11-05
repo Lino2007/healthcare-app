@@ -1,5 +1,4 @@
 ﻿using HealthcareApp.Models.DataModels;
-using HealthcareApp.Repository.Implementation;
 using HealthcareApp.Repository.Interface;
 
 namespace HealthcareApp.Repository.Implementation

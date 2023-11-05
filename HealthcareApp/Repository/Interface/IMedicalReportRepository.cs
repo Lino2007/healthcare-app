@@ -1,4 +1,5 @@
 ﻿using HealthcareApp.Models.DataModels;
+using HealthcareApp.Models.ViewModels;
 
 namespace HealthcareApp.Repository.Interface
 {
@@ -6,6 +7,7 @@ namespace HealthcareApp.Repository.Interface
     {
         public Task<List<MedicalReport>> GetAllDetailedMedicalReports();
         public Task<MedicalReport?> GetDetailedMedicalReport(Guid id);
+        public Task<List<AdmissionMedicalReport>> GetAdmissionMedicalReportList(List<PatientAdmission> admissions);
 
     }
 }
