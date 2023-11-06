@@ -7,7 +7,7 @@ namespace HealthcareApp.Models.DataModels
     public class PatientAdmission : BaseDataModel
     {
         [Display(Name = "Admission Date/Time")]
-        [DateNotInPast(ErrorMessage = "Admission date must not be in the past")]
+        [DateNotInPast(ErrorMessage = "Admission date must not be in the past.")]
         public DateTime AdmissionDateTime { get; set; }
 
         [Display(Name = "Patient")]

@@ -22,7 +22,7 @@
         </dl>
         @if (ViewBag.Cancelled is null && Model.IsCancelled is null)
         {
-            <a asp-action="Edit" asp-route-id="@Model?.MedicalReport.Id" class="btn btn-primary">Edit report</a>
+            <a asp-controller="MedicalReports" asp-action="Edit" asp-route-id="@Model?.MedicalReport.Id" class="btn btn-primary">Edit report</a>
         }
     }
     else

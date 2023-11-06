@@ -70,12 +70,12 @@ namespace HealthcareApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Description,DateCreated,PatientAdmissionId")] MedicalReport medicalReport)
         {
+            var admission = await _patientAdmissionRepository.GetDetailedPatientAdmission(medicalReport.PatientAdmissionId);
             if (ModelState.IsValid)
             {
                 await _medicalReportRepository.Add(medicalReport);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Patients", new { id = admission.PatientId });
             }
-            var admission = await _patientAdmissionRepository.GetDetailedPatientAdmission(medicalReport.PatientAdmissionId);
             ViewBag.PatientAdmission = admission;
             return View(medicalReport);
         }
@@ -108,7 +108,7 @@ namespace HealthcareApp.Controllers
             {
                 return NotFound();
             }
-
+            var admission = await _patientAdmissionRepository.GetDetailedPatientAdmission(medicalReport.PatientAdmissionId);
             if (ModelState.IsValid)
             {
                 try
@@ -126,9 +126,8 @@ namespace HealthcareApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Patients", new { id = admission.PatientId });
             }
-            var admission = await _patientAdmissionRepository.GetDetailedPatientAdmission(medicalReport.PatientAdmissionId);
             ViewBag.PatientAdmission = admission;
             return View(medicalReport);
         }

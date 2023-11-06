@@ -1,4 +1,5 @@
 ﻿using HealthcareApp.Models.Shared;
+using HealthcareApp.Utils;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,6 +17,7 @@ namespace HealthcareApp.Models.DataModels
 
         [Display(Name = "Date of Birth")]
         [DataType(DataType.Date)]
+        [DateNotInFuture(ErrorMessage = "Date of birth cannot be in future.")]
         public DateTime DateOfBirth { get; set; }
 
         [Column(TypeName = "nvarchar(10)")]
