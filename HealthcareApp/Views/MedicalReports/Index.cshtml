@@ -15,27 +15,20 @@
             <th>
                 @Html.DisplayNameFor(model => model.DateCreated)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PatientAdmission)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="desc-col">
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateCreated)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PatientAdmission.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-controller="PatientAdmissions" asp-action="Details" asp-route-id="@item.PatientAdmissionId">Details</a> 
+                <a asp-controller="PatientAdmissions" asp-action="Details" asp-route-id="@item.PatientAdmissionId" ><i class="fas fa-info-circle fa-lg"></i></a> 
             </td>
         </tr>
 }

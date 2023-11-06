@@ -5,11 +5,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-
 @await Html.PartialAsync("PatientAdmissionPartial", Model)
-@if (!Model.IsCancelled)
-{
-    @await Html.PartialAsync("MedicalRecordPartial", (MedicalReportPartialViewModel) ViewBag.MedicalReport)
-}
+<br/>
+<br/>
+@await Html.PartialAsync("MedicalRecordPartial", (MedicalReportPartialViewModel) ViewBag.MedicalReport)

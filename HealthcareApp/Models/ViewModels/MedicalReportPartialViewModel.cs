@@ -6,5 +6,6 @@ namespace HealthcareApp.Models.ViewModels
     {
         public MedicalReport? MedicalReport { get; set; }
         public Guid AdmissionId { get; set; }
+        public bool? IsCancelled { get; set; }
     }
 }

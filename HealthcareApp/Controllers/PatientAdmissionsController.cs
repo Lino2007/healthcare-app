@@ -59,6 +59,11 @@ namespace HealthcareApp.Controllers
                 return NotFound();
             }
 
+            if (patientAdmission.IsCancelled)
+            {
+                ViewBag.Cancelled = "Yes";
+            }
+
             var medicalReport = (await _medicalReportRepository.FindBy(m => m.PatientAdmissionId == patientAdmission.Id)).FirstOrDefault();
             ViewBag.MedicalReport = new MedicalReportPartialViewModel() { MedicalReport = medicalReport, AdmissionId =  patientAdmission.Id };
             return View(patientAdmission);
