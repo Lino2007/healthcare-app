@@ -2,11 +2,7 @@
 
 <div>
     <h4>Medical Report</h4>
-    @if (Model.MedicalReport is not null)
-    {
-        <a asp-action="Edit" asp-route-id="@Model?.MedicalReport.Id">Edit</a> 
-    }
-    <hr />
+    <hr/>
     @if (Model.MedicalReport is not null)
     {
         <dl class="row">
@@ -24,10 +20,21 @@
             </dd>
 
         </dl>
+        @if (ViewBag.Cancelled is null && Model.IsCancelled is null)
+        {
+            <a asp-action="Edit" asp-route-id="@Model?.MedicalReport.Id" class="btn btn-primary">Edit report</a>
+        }
     }
     else
     {
-        <p>No medical report for associated admission, <a asp-controller="MedicalReports" asp-action="Create" asp-route-id="@Model.AdmissionId">click here</a> to create it.</p>
+        @if (ViewBag.Cancelled is null && Model.IsCancelled is null)
+        {
+            <p>No medical report for associated admission, <a asp-controller="MedicalReports" asp-action="Create" asp-route-id="@Model.AdmissionId">click here</a> to create it.</p>
+        }
+        else
+        {
+            <p>No medical report for associated admission. It is not possible to create new report for cancelled admission.</p>
+        }
     }
 </div>
 

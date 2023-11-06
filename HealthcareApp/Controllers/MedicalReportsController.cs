@@ -25,16 +25,13 @@ namespace HealthcareApp.Controllers
         }
 
         // GET: MedicalReports/Partial/{Id}
-        public async Task<IActionResult> Partial(Guid? admissionId)
+        public async Task<IActionResult> Partial(Guid admissionId)
         {
-            MedicalReport? medicalReport = null;
-            if (admissionId is not null)
-            {
-                medicalReport = (await _medicalReportRepository.FindBy(m => m.PatientAdmissionId == admissionId)).FirstOrDefault();
-            }
+            var medicalReport = (await _medicalReportRepository.FindBy(m => m.PatientAdmissionId == admissionId)).FirstOrDefault();
+            var admission = await _patientAdmissionRepository.GetById(admissionId);
+            var partViewModel = new MedicalReportPartialViewModel() { MedicalReport = medicalReport, AdmissionId = admissionId, 
+                                                                      IsCancelled = admission is not null && admission.IsCancelled ? true : null};
             
-            var partViewModel = new MedicalReportPartialViewModel() { MedicalReport = medicalReport, AdmissionId = admissionId.Value };
-
             return PartialView("MedicalRecordPartial", partViewModel);
         }
 
