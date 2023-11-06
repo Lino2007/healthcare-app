@@ -21,11 +21,11 @@ body {
     margin-left: 15px;
 }
 
-.fa-trash {
+.fa-trash, .fa-ban {
     color: red;
 }
 
-.fa-trash:hover {
+.fa-trash:hover, .fa-ban:hover {
     color: brown;
 }
 
@@ -36,4 +36,12 @@ body {
 .det-header {
     display: flex;
     vertical-align: central;
+}
+
+textarea {
+    height: 250pt;
+}
+
+.desc-col {
+    max-width: 200pt;
 }
