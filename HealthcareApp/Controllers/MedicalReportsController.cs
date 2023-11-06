@@ -9,13 +9,11 @@ namespace HealthcareApp.Controllers
 {
     public class MedicalReportsController : Controller
     {
-        private readonly HealthcareDbContext _context;
         private readonly IMedicalReportRepository _medicalReportRepository;
         private readonly IPatientAdmissionRepository _patientAdmissionRepository;
 
-        public MedicalReportsController(HealthcareDbContext context, IMedicalReportRepository medicalReportRepository, IPatientAdmissionRepository patientAdmissionRepository)
+        public MedicalReportsController(IMedicalReportRepository medicalReportRepository, IPatientAdmissionRepository patientAdmissionRepository)
         {
-            _context = context;
             _medicalReportRepository = medicalReportRepository;
             _patientAdmissionRepository = patientAdmissionRepository;
         }
@@ -136,37 +134,6 @@ namespace HealthcareApp.Controllers
             var admission = await _patientAdmissionRepository.GetDetailedPatientAdmission(medicalReport.PatientAdmissionId);
             ViewBag.PatientAdmission = admission;
             return View(medicalReport);
-        }
-
-        // GET: MedicalReports/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id is null)
-            {
-                return NotFound();
-            }
-
-            var medicalReport = await _medicalReportRepository.GetDetailedMedicalReport(id.Value);
-            if (medicalReport is null)
-            {
-                return NotFound();
-            }
-
-            return View(medicalReport);
-        }
-
-        // POST: MedicalReports/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var medicalReport = await _medicalReportRepository.GetById(id);
-            if (medicalReport is not null)
-            {
-                await _medicalReportRepository.Delete(id);
-            }
-
-            return RedirectToAction(nameof(Index));
         }
     }
 }

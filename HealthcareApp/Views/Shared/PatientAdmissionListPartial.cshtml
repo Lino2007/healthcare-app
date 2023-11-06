@@ -63,8 +63,7 @@
                     <a asp-controller="PatientAdmissions" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     <span>| </span>
                     @Html.ActionLink("Cancel Admission", "CancelAdmission", "PatientAdmissions", new { id = item.Id, redirectToPatient = (ViewData["PatientPage"] is not null) })
-                }
-                    
+                }   
             </td>
         </tr>
 }

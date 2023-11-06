@@ -27,7 +27,7 @@ namespace HealthcareApp.Controllers
             _pdfGenerator = pdfGenerator;
         }
 
-
+        #region Controller Action Methods
         // GET: PatientAdmissions
         public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate)
         {
@@ -54,11 +54,11 @@ namespace HealthcareApp.Controllers
 
             var patientAdmission = await _patientAdmissionRepository.GetDetailedPatientAdmission(id.Value);
             
-            //ViewBag.MedicalRecord
             if (patientAdmission is null)
             {
                 return NotFound();
             }
+
             var medicalReport = (await _medicalReportRepository.FindBy(m => m.PatientAdmissionId == patientAdmission.Id)).FirstOrDefault();
             ViewBag.MedicalReport = new MedicalReportPartialViewModel() { MedicalReport = medicalReport, AdmissionId =  patientAdmission.Id };
             return View(patientAdmission);
@@ -153,6 +153,7 @@ namespace HealthcareApp.Controllers
             return View(patientAdmission);
         }
 
+        // GET: PatientAdmissions/CancelAdmission?id=*&redirectToPatient=*
         public async Task<IActionResult> CancelAdmission(Guid id, bool redirectToPatient)
         {
             var patientAdmission = await _patientAdmissionRepository.GetById(id);
@@ -181,6 +182,7 @@ namespace HealthcareApp.Controllers
             {
                 return NotFound($"Patient Admission update operation failed: {e.Message}");
             }
+            // when cancellation is done from Patient's page
             if (redirectToPatient)
             {
                 return RedirectToAction("Details", "Patients", new { id = patientAdmission.PatientId });
@@ -189,45 +191,17 @@ namespace HealthcareApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: PatientAdmissions/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id is null)
-            {
-                return NotFound();
-            }
-
-            var patientAdmission = await _patientAdmissionRepository.GetDetailedPatientAdmission(id.Value);
-            if (patientAdmission is null)
-            {
-                return NotFound();
-            }
-
-            return View(patientAdmission);
-        }
-
-        // POST: PatientAdmissions/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var patientAdmission = await _patientAdmissionRepository.GetById(id);
-            if (patientAdmission != null)
-            {
-                await _patientAdmissionRepository.Delete(id);
-            }
-           
-            return RedirectToAction(nameof(Index));
-        }
-
+        // GET: PatientAdmissions/GeneratePdf?startDate=*&endDate=*&patientId=*
         public async Task<IActionResult> GeneratePdf(DateTime? startDate, DateTime? endDate, Guid? patientId)
         {
             var patientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(startDate, endDate, patientId);
-            var admissionReportList = await _medicalReportRepository.GetAdmissionMedicalReportList(patientAdmissions);
-            var x = _pdfGenerator.GetPdf(admissionReportList);
+            var admissionAndMedicalReportList = await _medicalReportRepository.GetAdmissionMedicalReportList(patientAdmissions);
+            var x = _pdfGenerator.GetPdf(admissionAndMedicalReportList);
             return File(x, "application/pdf");
         }
+        #endregion
 
+        #region Helpers
         private async Task<List<SelectListItem>> GetSpecialistSelectList(Guid? selectedSpecialist)
         {
             var specialists = await _doctorRepository.FindBy(d => d.Title == DoctorTitle.Specialist && !d.IsDeleted);
@@ -264,5 +238,6 @@ namespace HealthcareApp.Controllers
             ViewBag.SpecialistId = await GetSpecialistSelectList(selectedSpecialist);
             ViewBag.PatientId = await GetPatientSelectList(selectedPatient);
         }
+        #endregion 
     }
 }
