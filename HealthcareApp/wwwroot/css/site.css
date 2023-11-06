@@ -16,3 +16,24 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.btn-spacing {
+    margin-left: 15px;
+}
+
+.fa-trash {
+    color: red;
+}
+
+.fa-trash:hover {
+    color: brown;
+}
+
+.cnew {
+    margin-top: 17%;
+}
+
+.det-header {
+    display: flex;
+    vertical-align: central;
+}
