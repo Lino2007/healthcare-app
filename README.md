@@ -90,4 +90,5 @@ Prikaz sekcije nalaza je realiziran korištenjem Ajax zahtjeva definiran u [Admi
 
 ### Izrada PDF-a prijem/nalaz
 Generirani PDF je moguće preuzeti podsekcije *Patient Admissions List* na stranici pacijenta ili na stranici prijema pacijenata. Na stranici prijema pacijenata je moguće filtrirati koje će se stavke prikazati prema spomenutom *od-do* filteru.
+
  ![Slika 8](./images/08.PNG)
