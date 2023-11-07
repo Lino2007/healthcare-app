@@ -13,10 +13,6 @@
                 alert('Error occurred while fetching data.');
             }
         });
-
-        $.get(`MedicalReports/Partial/${admissionId}`, function (data, status) {
-            $('#medRecPartialView').html(data);
-        });
     });
 });
 

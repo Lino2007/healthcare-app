@@ -30,7 +30,7 @@ namespace HealthcareApp.Controllers
             var medicalReport = (await _medicalReportRepository.FindBy(m => m.PatientAdmissionId == admissionId)).FirstOrDefault();
             var admission = await _patientAdmissionRepository.GetById(admissionId);
             var partViewModel = new MedicalReportPartialViewModel() { MedicalReport = medicalReport, AdmissionId = admissionId, 
-                                                                      IsCancelled = admission is not null && admission.IsCancelled ? true : null};
+                                                                      IsCancelled = (admission is not null && admission.IsCancelled) ? true : null};
             
             return PartialView("MedicalRecordPartial", partViewModel);
         }

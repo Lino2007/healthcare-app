@@ -61,7 +61,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model.PatientAdmissions) {
-        <tr class="@(item.AdmissionDateTime < DateTime.Now || item.IsCancelled ? "completed-row": item.IsUrgent ? "urgent-row" : "active-row" ) adm-row no-select" id="@item.Id">
+        <tr class="@(item.IsCancelled ? "cancelled-row" : item.AdmissionDateTime < DateTime.Now ? "completed-row": item.IsUrgent ? "urgent-row" : "active-row" ) adm-row no-select" id="@item.Id">
             <td>
                 @Html.DisplayFor(modelItem => item.Patient.FullName)
             </td>
@@ -87,7 +87,8 @@
     <div class="col-auto"><p>Table legend: </p></div>
     <div class="col-auto"><span class="badge badge-light text-dark bordered-span">Active</span></div>
     <div class="col-auto"><span class="badge urgent-row">Urgent</span></div>          
-    <div class="col-auto"><span class="badge completed-row text-dark">Completed/Cancelled</span></div>
+    <div class="col-auto"><span class="badge completed-row text-dark">Completed</span></div>
+    <div class="col-auto"><span class="badge cancelled-row text-dark">Cancelled</span></div>
     <div class="col-auto"><span class="badge selected text-dark">Selected Row</span></div>
 </div>
 <br/>
