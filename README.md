@@ -1,3 +1,4 @@
+
 # healthcare-app
 ASP.NET MVC core aplikacija za manju kliniku.
 
@@ -15,6 +16,15 @@ ASP.NET MVC core aplikacija za manju kliniku.
         dotnet user-secrets init
 
         dotnet user-secrets set "ConnectionStrings:HealthcareApp" "Data Source=localhost,1433;Initial Catalog=Healthcare;Password=VasPassword;User Id=SA;Encrypt=false;"
+     
+ 5. Pokrenuti komandu: dotnet ef database update
 
 6. Pokrenuti projekt.
+
+## Organizacija koda
+Uz standardne direktorije MVC projekta, uvedeni su dodatni za organizaciju.
+
+ - Migrations - auto-generirani Entity Framework kod za generiranje baze i popunjavanje inicijalnih podataka u bazi
+ - Repository - klase koje enkapsuliraju database CRUD operacije. Generična implementacija CRUD operacija se nalazi u [CrudRepository klasi](./HealthcareApp/Repository/Implementation/CrudRepository.cs)
+
 
