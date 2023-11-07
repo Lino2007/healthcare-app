@@ -58,3 +58,31 @@ Kao što je vidljivo sa slike 3, na tabeli se nalaze filtrirani prijemovi od 30.
  - Otkazan (Cancelled) - prijem koji je otkazan. Ne može se mijenjati niti mu se pridružvati nalaz.
 
 Dvoklikom na jedan od redova se otvara sekcija koja prikazuje nalaz ukoliko postoji, uz mogućnost da se isti izmjeni ili ukoliko nalaz ne postoji moguće ga je kreirati klikom na ponuđeni link.
+
+### Operacije brisanja
+Brisanje pacijenta i doktora se radi principom *soft delete* što podrazumjeva postavljanje *IsDeleted* flag-a na *true* za odabranog doktora/pacijenta umjesto brisanja ovih entiteta u bazi. Prednost ovog pristupa je što se neće pokrenuti kaskadno brisanje vezanih nalaza i prijemova. Prijemove i nalaze nije moguće obrisati, a prijemovi se mogu samo otkazati.
+
+### Sekcija prijema pacijenta
+Stranica prijema pacijenta je realizirana kao *Partial View* koji se koristi na istoimenoj stranici i kao podsekcija na stranici pacijenta. Stranica se sastoji iz filtera za stavke, tabela stavki prijema i za odabranu stavku prijema (dupli klik na red) se otvara podsekcija sa nalazima za dati prijem.
+ ![Slika 3: Tabela prijema pacijenata]([./images/03_pa.PNG)
+
+Kao što je vidljivo sa slike 3, na tabeli se nalaze filtrirani prijemovi od 30.10.2023 do 18.11.2023. Prijem može biti različitog statusa i u legendi tabele su navedeni redom sljedeći statusi:
+
+ - Aktivan (Active) - prijem je aktivan i treba da se obavi u budućnosti. Za ovakav prijem je moguće sami prijem mijenjati kao i pripadajući nalaz.
+ - Hitan (Urgent) - prijem koji je označen kao hitan. Ista pravila vrijede kao i za Aktivan prijem.
+ - Završen (Completed) - prijem koji je završen i za koji se može jedino uređivati/dodavati nalaz
+ - Otkazan (Cancelled) - prijem koji je otkazan. Ne može se mijenjati niti mu se pridružvati nalaz.
+
+Dvoklikom na jedan od redova se otvara sekcija koja prikazuje nalaz ukoliko postoji, uz mogućnost da se isti izmjeni ili ukoliko nalaz ne postoji moguće ga je kreirati klikom na ponuđeni link.
+Prikaz sekcije nalaza je realiziran korištenjem Ajax zahtjeva definiran u [Admissions.js skripti](./HealthcareApp/wwwroot/js/PatientAdmission.js). Prikaz sekcije je u potpunosti asinkron i ne zahtjeva osvježavanje stranice.
+
+### Proces izrade nalaza za pacijenta
+1. Otvoriti stranicu pacijenata i odabrati pacijenta za kojeg želite kreirati nalaz
+ ![Slika 4: Tabela prijema pacijenata]([./images/04.PNG)
+ 2. Na stranici detalja pacijenata odabrati *Create New* dugme na sekciji *Patient Admission List*
+ ![Slika 5]([./images/05.PNG)
+ 3. Popuniti detalje za prijem. Možete primjetiti da će *dropdown* za doktore prikazati samo specijaliste.
+  ![Slika 6]([./images/06.PNG)
+  4. Nakon što kreirate prijem bit ćete vraćeni na stranicu pacijenta gdje će te dvoklikom na novokreirani prijem moći izraditi nalaz.
+ ![Slika 7]([./images/07.PNG)
+ 5. Nakon što ispunite nalaz na stranici pacijenta ćete (uz odabir prijema) vidjeti kreirani nalaz slično kao na slici iz prethodne sekcije.
