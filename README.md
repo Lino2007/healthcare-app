@@ -86,3 +86,8 @@ Prikaz sekcije nalaza je realiziran korištenjem Ajax zahtjeva definiran u [Admi
 4. Nakon što kreirate prijem bit ćete vraćeni na stranicu pacijenta gdje će te dvoklikom na novokreirani prijem moći izraditi nalaz.
  ![Slika 7](./images/07.png)
 5. Nakon što ispunite nalaz na stranici pacijenta ćete (uz odabir prijema) vidjeti kreirani nalaz slično kao na slici iz prethodne sekcije.
+
+
+### Izrada PDF-a prijem/nalaz
+Generirani PDF je moguće preuzeti podsekcije *Patient Admissions List* na stranici pacijenta ili na stranici prijema pacijenata. Na stranici prijema pacijenata je moguće filtrirati koje će se stavke prikazati prema spomenutom *od-do* filteru.
+ ![Slika 8](./images/08.PNG)
