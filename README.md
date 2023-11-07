@@ -84,5 +84,5 @@ Prikaz sekcije nalaza je realiziran korištenjem Ajax zahtjeva definiran u [Admi
 3. Popuniti detalje za prijem. Možete primjetiti da će *dropdown* za doktore prikazati samo specijaliste.
   ![Slika 6](./images/06.png)
 4. Nakon što kreirate prijem bit ćete vraćeni na stranicu pacijenta gdje će te dvoklikom na novokreirani prijem moći izraditi nalaz.
- ![Slika 7]([./images/07.png)
+ ![Slika 7](./images/07.png)
 5. Nakon što ispunite nalaz na stranici pacijenta ćete (uz odabir prijema) vidjeti kreirani nalaz slično kao na slici iz prethodne sekcije.
