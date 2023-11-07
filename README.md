@@ -45,3 +45,16 @@ Dok na stranicama nalaza je moguće samo pregledati detalje o nalazu (stranica n
  ![Slika 2: Operacije uređivanja i kreiranja](./images/02_cu.PNG)
 
 Princip uređivanja i kreiranja stavki je posve identičan za svaki entitet. Validacija je realizirana sa serverske strane korištenjem validacijskih atributa kao i 'custom' atributa za scenarije koje ugrađeni atributi ne pokrivaju. Primjerice za provjeru da li su datumi prijema uneseni u budućnosti koristi se custom atribut [DateNotInFuture](./HealthcareApp/Utils/DateNotInFutureAttribute.cs).
+
+### Sekcija prijema pacijenta
+Stranica prijema pacijenta je realizirana kao *Partial View* koji se koristi na istoimenoj stranici i kao podsekcija na stranici pacijenta. Stranica se sastoji iz filtera za stavke, tabela stavki prijema i za odabranu stavku prijema (dupli klik na red) se otvara podsekcija sa nalazima za dati prijem.
+ ![Slika 3: Tabela prijema pacijenata](./images/03_pa.PNG)
+
+Kao što je vidljivo sa slike 3, na tabeli se nalaze filtrirani prijemovi od 30.10.2023 do 18.11.2023. Prijem može biti različitog statusa i u legendi tabele su navedeni redom sljedeći statusi:
+
+ - Aktivan (Active) - prijem je aktivan i treba da se obavi u budućnosti. Za ovakav prijem je moguće sami prijem mijenjati kao i pripadajući nalaz.
+ - Hitan (Urgent) - prijem koji je označen kao hitan. Ista pravila vrijede kao i za Aktivan prijem.
+ - Završen (Completed) - prijem koji je završen i za koji se može jedino uređivati/dodavati nalaz
+ - Otkazan (Cancelled) - prijem koji je otkazan. Ne može se mijenjati niti mu se pridružvati nalaz.
+
+Dvoklikom na jedan od redova se otvara sekcija koja prikazuje nalaz ukoliko postoji, uz mogućnost da se isti izmjeni ili ukoliko nalaz ne postoji moguće ga je kreirati klikom na ponuđeni link.
