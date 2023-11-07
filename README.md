@@ -40,3 +40,5 @@ Na navedenoj slici su označene akcije koje se nad specifičnim stavkama tabele 
 U gornjem desnom kutu se nalazi dugme za kreiranje nove stavke. Imati u vidu, da su sve navedene akcije moguće na stranicama pacijenta i doktora.
 Dok na stranicama nalaza je moguće samo pregledati detalje o nalazu (stranica nalaza je uvedena isključivo informativno), a na stranici prijema se pored pregleda detalja je moguće urediti i otkazati prijem.
 
+### Operacije uređivanja i kreiranja
+
