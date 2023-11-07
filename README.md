@@ -17,7 +17,7 @@ ASP.NET MVC core aplikacija za manju kliniku.
 
         dotnet user-secrets set "ConnectionStrings:HealthcareApp" "Data Source=localhost,1433;Initial Catalog=Healthcare;Password=VasPassword;User Id=SA;Encrypt=false;"
      
- 5. Pokrenuti komandu: dotnet ef database update
+5. Pokrenuti komandu: dotnet ef database update
 
 6. Pokrenuti projekt.
 
@@ -25,6 +25,12 @@ ASP.NET MVC core aplikacija za manju kliniku.
 Uz standardne direktorije MVC projekta, uvedeni su dodatni za organizaciju.
 
  - Migrations - auto-generirani Entity Framework kod za generiranje baze i popunjavanje inicijalnih podataka u bazi
- - Repository - klase koje enkapsuliraju database CRUD operacije. Generična implementacija CRUD operacija se nalazi u [CrudRepository klasi](./HealthcareApp/Repository/Implementation/CrudRepository.cs)
+ - Repository - klase koje enkapsuliraju database CRUD operacije. Generična implementacija CRUD operacija se nalazi u [CrudRepository klasi](./HealthcareApp/Repository/Implementation/CrudRepository.cs). A operacije koje su specifične za pojedine klase se nalaze u istoimenim \<ImeKlase\>Repository klasama.
+ - Utils - različite pomoćne klase, atributi i exception klase
+ - Unutar Model direktorija se nalaze *Data* klase u sklopu *DataModels* direktorija, dok se pomoćne view klase nalaze u *ViewModels* direktoriju.
+ - wwwroot - su ubačene pomoćne javascript klase i css
+
+Povezivanje repozitorij sloja sa kontrolerima realiziran je putem Dependency Injection sistema.
+
 
 
