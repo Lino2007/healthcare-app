@@ -33,4 +33,10 @@ Uz standardne direktorije MVC projekta, uvedeni su dodatni za organizaciju.
 Povezivanje repozitorij sloja sa kontrolerima realiziran je putem Dependency Injection sistema.
 
 
+## O aplikaciji
+Za sve navedene entitete u postavci (pacijent, ljekar, prijem i nalaz) su napravljeni zasebne podstranice sa tabelom svih navedenih entiteta u sistemu respektivno:
+![Slika 1: Prikaz tabela entiteta](./images/01_show_list.PNG)
+Na navedenoj slici su označene akcije koje se nad specifičnim stavkama tabele mogu raditi: pregled detalja, uređivanje i brisanje (s lijevo na desno)
+U gornjem desnom kutu se nalazi dugme za kreiranje nove stavke. Imati u vidu, da su sve navedene akcije moguće na stranicama pacijenta i doktora.
+Dok na stranicama nalaza je moguće samo pregledati detalje o nalazu (stranica nalaza je uvedena isključivo informativno), a na stranici prijema se pored pregleda detalja je moguće urediti i otkazati prijem.
 
