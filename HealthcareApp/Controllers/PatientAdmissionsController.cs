@@ -31,7 +31,8 @@ namespace HealthcareApp.Controllers
         // GET: PatientAdmissions
         public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate)
         {
-            if(startDate > endDate)
+            var patientAdmissionVM = new PatientAdmissionViewModel() { PatientAdmissions = new List<PatientAdmission>() };
+            if (startDate > endDate)
             {
                 ViewData["ErrorMessage"] = "Start date cannot be after end date, please check your inputs.";
                 startDate = endDate = null;
@@ -39,8 +40,10 @@ namespace HealthcareApp.Controllers
             else
             {
                 ViewData["ErrorMessage"] = null;
+                patientAdmissionVM.PatientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(startDate, endDate, null);
             }
-            var patientAdmissionVM = new PatientAdmissionViewModel() { PatientAdmissions = await _patientAdmissionRepository.GetAllDetailedPatientAdmissions(startDate , endDate, null), StartDate = startDate, EndDate = endDate };
+            patientAdmissionVM.StartDate = startDate;
+            patientAdmissionVM.EndDate = endDate;
             return View(patientAdmissionVM);
         }
 
@@ -87,6 +90,7 @@ namespace HealthcareApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,AdmissionDateTime,PatientId,DoctorId,IsUrgent")] PatientAdmission patientAdmission)
         {
+            ViewBag.AdmissionState = null;
             if (ModelState.IsValid)
             {
                 try
@@ -96,9 +100,12 @@ namespace HealthcareApp.Controllers
                 }
                 catch (DbObjectNotFound e)
                 {
-                    NotFound($"Patient Admission create operation failed: {e.Message}");
+                    ViewBag.AdmissionState = $"Patient Admission create operation failed: {e.Message}";
                 }
-                return RedirectToAction("Details", "Patients", new { id = patientAdmission.PatientId });
+                if (ViewBag.AdmissionState is null)
+                {
+                    return RedirectToAction("Details", "Patients", new { id = patientAdmission.PatientId });
+                }
             }
             await LoadSelectLists(patientAdmission.DoctorId, patientAdmission.PatientId);
             return View(patientAdmission);
@@ -126,6 +133,7 @@ namespace HealthcareApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,AdmissionDateTime,PatientId,DoctorId,IsUrgent")] PatientAdmission patientAdmission)
         {
+            ViewBag.AdmissionState = null;
             if (id != patientAdmission.Id)
             {
                 return NotFound();
@@ -150,9 +158,12 @@ namespace HealthcareApp.Controllers
                 }
                 catch(DbObjectNotFound e)
                 {
-                    return NotFound($"Patient Admission update operation failed: {e.Message}");
+                    ViewBag.AdmissionState = $"Patient Admission update operation failed: {e.Message}";
                 }
-                return RedirectToAction("Details", "Patients", new { id = patientAdmission.PatientId });
+                if (ViewBag.AdmissionState is null)
+                {
+                    return RedirectToAction("Details", "Patients", new { id = patientAdmission.PatientId });
+                }
             }
             await LoadSelectLists(patientAdmission.DoctorId, patientAdmission.PatientId);
             return View(patientAdmission);

@@ -24,7 +24,7 @@ namespace HealthcareApp.Repository.Implementation
                 var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == specialistId && d.Title == DoctorTitle.Specialist && !d.IsDeleted);
                 if (doctor is null)
                 {
-                    throw new DbObjectNotFound($"Specialist with id {specialistId} is either deleted or not found");
+                    throw new DbObjectNotFound($"Selected specialist is not found! Please select specialist from refreshed list.");
                 }
             }
 
@@ -33,7 +33,7 @@ namespace HealthcareApp.Repository.Implementation
                 var patient = await _context.Patients.FirstOrDefaultAsync(d => d.Id == patientId && !d.IsDeleted);
                 if (patient is null)
                 {
-                    throw new DbObjectNotFound($"Patient with id {patientId} is either deleted or not found");
+                    throw new DbObjectNotFound($"Patient is not found! Please select patient from refreshed list.");
                 }
             }
         }
@@ -70,7 +70,10 @@ namespace HealthcareApp.Repository.Implementation
 
         public override async Task Update(PatientAdmission entity)
         {
-            await CheckDoctorAndPatient(entity.DoctorId, entity.PatientId);
+            if (!entity.IsCancelled)
+            {
+                await CheckDoctorAndPatient(entity.DoctorId, entity.PatientId);
+            }
             await base.Update(entity);
         }
     }

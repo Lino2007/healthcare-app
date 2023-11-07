@@ -33,7 +33,7 @@
 <div class="det-header">
     @if (!Model.IsCancelled && Model.AdmissionDateTime > DateTime.Now) {
         <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn-spacing mt-2 btn-primary btn">Edit</a>
-        <p>&nbsp;</p>
+        <p>&nbsp; &nbsp;</p>
     }
     <a asp-action="Index" class="mt-2 btn-danger btn">To admission list</a>
 </div>
