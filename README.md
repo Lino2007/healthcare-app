@@ -40,3 +40,8 @@ Na navedenoj slici su označene akcije koje se nad specifičnim stavkama tabele 
 U gornjem desnom kutu se nalazi dugme za kreiranje nove stavke. Imati u vidu, da su sve navedene akcije moguće na stranicama pacijenta i doktora.
 Dok na stranicama nalaza je moguće samo pregledati detalje o nalazu (stranica nalaza je uvedena isključivo informativno), a na stranici prijema se pored pregleda detalja je moguće urediti i otkazati prijem.
 
+### Operacije uređivanja i kreiranja
+
+ ![Slika 2: Operacije uređivanja i kreiranja](./images/02_cu.PNG)
+
+Princip uređivanja i kreiranja stavki je posve identičan za svaki entitet. Validacija je realizirana sa serverske strane korištenjem validacijskih atributa kao i 'custom' atributa za scenarije koje ugrađeni atributi ne pokrivaju. Primjerice za provjeru da li su datumi prijema uneseni u budućnosti koristi se custom atribut [DateNotInFuture](./HealthcareApp/Utils/DateNotInFutureAttribute.cs).
