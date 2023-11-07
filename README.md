@@ -64,7 +64,7 @@ Brisanje pacijenta i doktora se radi principom *soft delete* što podrazumjeva p
 
 ### Sekcija prijema pacijenta
 Stranica prijema pacijenta je realizirana kao *Partial View* koji se koristi na istoimenoj stranici i kao podsekcija na stranici pacijenta. Stranica se sastoji iz filtera za stavke, tabela stavki prijema i za odabranu stavku prijema (dupli klik na red) se otvara podsekcija sa nalazima za dati prijem.
- ![Slika 3: Tabela prijema pacijenata]([./images/03_pa.PNG)
+ ![Slika 3: Tabela prijema pacijenata](./images/03_pa.PNG)
 
 Kao što je vidljivo sa slike 3, na tabeli se nalaze filtrirani prijemovi od 30.10.2023 do 18.11.2023. Prijem može biti različitog statusa i u legendi tabele su navedeni redom sljedeći statusi:
 
@@ -78,11 +78,11 @@ Prikaz sekcije nalaza je realiziran korištenjem Ajax zahtjeva definiran u [Admi
 
 ### Proces izrade nalaza za pacijenta
 1. Otvoriti stranicu pacijenata i odabrati pacijenta za kojeg želite kreirati nalaz
- ![Slika 4: Tabela prijema pacijenata]([./images/04.PNG)
- 2. Na stranici detalja pacijenata odabrati *Create New* dugme na sekciji *Patient Admission List*
- ![Slika 5]([./images/05.PNG)
- 3. Popuniti detalje za prijem. Možete primjetiti da će *dropdown* za doktore prikazati samo specijaliste.
-  ![Slika 6]([./images/06.PNG)
-  4. Nakon što kreirate prijem bit ćete vraćeni na stranicu pacijenta gdje će te dvoklikom na novokreirani prijem moći izraditi nalaz.
+ ![Slika 4: Tabela prijema pacijenata](./images/04.PNG)
+2. Na stranici detalja pacijenata odabrati *Create New* dugme na sekciji *Patient Admission List*
+ ![Slika 5](./images/05.PNG)
+3. Popuniti detalje za prijem. Možete primjetiti da će *dropdown* za doktore prikazati samo specijaliste.
+  ![Slika 6](./images/06.PNG)
+4. Nakon što kreirate prijem bit ćete vraćeni na stranicu pacijenta gdje će te dvoklikom na novokreirani prijem moći izraditi nalaz.
  ![Slika 7]([./images/07.PNG)
- 5. Nakon što ispunite nalaz na stranici pacijenta ćete (uz odabir prijema) vidjeti kreirani nalaz slično kao na slici iz prethodne sekcije.
+5. Nakon što ispunite nalaz na stranici pacijenta ćete (uz odabir prijema) vidjeti kreirani nalaz slično kao na slici iz prethodne sekcije.
