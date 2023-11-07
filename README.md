@@ -12,8 +12,9 @@ ASP.NET MVC core aplikacija za manju kliniku.
 3. Klonirati projekt i otvoriti sln u VS Studio
 4. U VS Studio developer terminalu se pozicionirati na root projekta. Za postavku konekcionog stringa (iz koraka 2) u projektu za SQL bazu koristiti komande:
 
-    dotnet user-secrets init
-    dotnet user-secrets set "ConnectionStrings:HealthcareApp" "Data Source=localhost,1433;Initial Catalog=Healthcare;Password=VasPassword;User Id=SA;Encrypt=false;"
+        dotnet user-secrets init
 
-5. Pokrenuti projekt.
+        dotnet user-secrets set "ConnectionStrings:HealthcareApp" "Data Source=localhost,1433;Initial Catalog=Healthcare;Password=VasPassword;User Id=SA;Encrypt=false;"
+
+6. Pokrenuti projekt.
 
