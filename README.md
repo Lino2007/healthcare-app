@@ -48,7 +48,7 @@ Princip uređivanja i kreiranja stavki je posve identičan za svaki entitet. Val
 
 ### Sekcija prijema pacijenta
 Stranica prijema pacijenta je realizirana kao *Partial View* koji se koristi na istoimenoj stranici i kao podsekcija na stranici pacijenta. Stranica se sastoji iz filtera za stavke, tabela stavki prijema i za odabranu stavku prijema (dupli klik na red) se otvara podsekcija sa nalazima za dati prijem.
- ![Slika 3: Tabela prijema pacijenata]([./images/03_pa.PNG)
+ ![Slika 3: Tabela prijema pacijenata](./images/03_pa.PNG)
 
 Kao što je vidljivo sa slike 3, na tabeli se nalaze filtrirani prijemovi od 30.10.2023 do 18.11.2023. Prijem može biti različitog statusa i u legendi tabele su navedeni redom sljedeći statusi:
 
